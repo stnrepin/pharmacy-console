@@ -3,11 +3,14 @@ package services.impl;
 import java.util.Date;
 import java.util.List;
 
-import models.Disease;
-import models.Medicine;
-import models.MedicineOrder;
+import models.*;
+import dao.hibernate.*;
 
 public class PharmacyServiceImpl {
+    private MedicineDao medicineDao;
+    private DiseaseDao diseaseDao;
+    private MedicineOrder medicineOrderDao;
+
     public List<Medicine> getAllMedicines() {
         return null;
     }
