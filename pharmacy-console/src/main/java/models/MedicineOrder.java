@@ -1,12 +1,20 @@
 package models;
 
+import javax.persistence.*;
+
 public class MedicineOrder {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
     private Medicine item;
     private int count;
-    private int total_price;
+    @Column(name = "total_price")
+    private int totalPrice;
 
     public Medicine getItem() {
-        return item;
+        return this.item;
     }
 
     public void setItem(Medicine item) {
@@ -14,18 +22,18 @@ public class MedicineOrder {
     }
 
     public int getCount() {
-        return count;
+        return this.count;
     }
 
     public void setCount(int count) {
         this.count = count;
     }
 
-    public int getTotal_price() {
-        return total_price;
+    public int getTotalPrice() {
+        return this.totalPrice;
     }
 
-    public void setTotal_price(int total_price) {
-        this.total_price = total_price;
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }
