@@ -1,6 +1,6 @@
 package services.impl;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import models.*;
@@ -39,7 +39,7 @@ public class PharmacyServiceImpl {
         return null;
     }
 
-    public int getMedicineOrderCountInPeriod(Date begin, Date end) {
+    public int getMedicineOrderCountInPeriod(LocalDateTime begin, LocalDateTime end) {
         return 0;
     }
 
