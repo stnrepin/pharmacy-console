@@ -1,24 +1,31 @@
-import models.Disease;
-import models.Medicine;
-import models.MedicineOrder;
-import services.impl.PharmacyServiceImpl;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends javafx.application.Application {
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage.setTitle("Pharmacy Console");
+        stage.setMinHeight(640);
+        stage.setMinWidth(stage.getMinHeight() * 1.6);
+
+        var mainFxml = getClass().getResource("/views/MainView.fxml");
+        var styleCss = getClass().getResource("/styles/style.css").toExternalForm();
+
+        var loader = new FXMLLoader();
+        loader.setLocation(mainFxml);
+
+        Parent root = loader.load();
+        var scene = new Scene(root);
+        scene.getStylesheets().add(styleCss);
+
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public static void main(String[] args) {
-        var service = new PharmacyServiceImpl();
-
-        var dis = new Disease("d");
-        var med1 = new Medicine("1", 5, 5);
-        var med2 = new Medicine("2", 10, 2);
-
-        med1.addTargetDisease(dis);
-
-        service.addMedicine(med1);
-        service.addMedicine(med2);
-        service.orderMedicine(med1.getId(), 2);
-        service.orderMedicine(med2.getId(), 1);
-
-        System.out.println("Medicine count: "+ service.getAllMedicines().size());
-        System.out.println("Orders cost: " + service.getOrderTotalCostMonth());
+        Application.launch(args);
     }
 }

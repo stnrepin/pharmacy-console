@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<HBox xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.MedicineOrderController"
+            alignment="CENTER">
+
+    <Text text="Not Implemented" textAlignment="CENTER" style="-fx-font-size: 30"
+          HBox.hgrow="ALWAYS" />
+
+</HBox>

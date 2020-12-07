@@ -31,6 +31,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="com.jfoenix:jfoenix:9.0.10" level="project" />
+    <orderEntry type="library" name="org.lesscss:lesscss-maven-plugin:1.7.0.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.2.18" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.checkerframework:checker-qual:3.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:5.4.23.Final" level="project" />
@@ -51,6 +53,16 @@
     <orderEntry type="library" name="Maven: com.sun.istack:istack-commons-runtime:3.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.staxex:stax-ex:1.8" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:5.4.23.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:15.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:linux:15.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:15.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:linux:15.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:15.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:linux:15.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:15.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:linux:15.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.jfoenix:jfoenix:9.0.10" level="project" />
+    <orderEntry type="library" name="Maven: de.jensd:fontawesomefx-materialicons:2.2.0-9.1.2" level="project" />
+    <orderEntry type="library" name="Maven: de.jensd:fontawesomefx-commons:9.1.2" level="project" />
   </component>
 </module>
