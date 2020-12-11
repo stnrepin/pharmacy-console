@@ -18,7 +18,7 @@
           AnchorPane.leftAnchor="10" AnchorPane.topAnchor="20"
           AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="20">
         <HBox alignment="CENTER_LEFT">
-            <JFXButton styleClass="phcy-action-button">
+            <JFXButton styleClass="phcy-action-button" onAction="#addMedicineAction">
                 <graphic>
                     <MaterialIconView glyphName="ADD" glyphSize="60" />
                 </graphic>

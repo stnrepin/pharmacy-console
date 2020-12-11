@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXButton?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.AddMedicineController"
+            prefHeight="280" prefWidth="480"
+            styleClass="phcy-panel">
+
+    <VBox spacing="10"
+          AnchorPane.leftAnchor="10" AnchorPane.topAnchor="20"
+          AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="20">
+        <GridPane hgap="10" vgap="15" VBox.vgrow="ALWAYS">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="30" />
+                <ColumnConstraints percentWidth="70" />
+            </columnConstraints>
+
+            <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                   styleClass="phcy-text" />
+            <JFXTextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                          styleClass="phcy-text,phcy-text-field" />
+
+            <Label text="Unit price" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                   styleClass="phcy-text" />
+            <JFXTextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                          styleClass="phcy-text,phcy-text-field" />
+
+            <Label text="Available quantity" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                   styleClass="phcy-text" />
+            <JFXTextField fx:id="quantityField" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                          styleClass="phcy-text,phcy-text-field" />
+
+            <Label text="Treat:" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                   styleClass="phcy-text" />
+            <JFXTextField fx:id="diseasesField" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                          styleClass="phcy-text,phcy-text-field" />
+        </GridPane>
+
+        <HBox spacing="20" alignment="BOTTOM_RIGHT" AnchorPane.rightAnchor="0">
+            <JFXButton text="OK" onAction="#ok" styleClass="phcy-main-button" />
+            <JFXButton text="Cancel" onAction="#cancel" styleClass="phcy-main-button"/>
+        </HBox>
+    </VBox>
+
+</AnchorPane>

@@ -7,11 +7,15 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
+import javafx.stage.Stage;
 import models.Medicine;
 import services.impl.MedicineServiceImpl;
+import utils.ViewManager;
 
 import java.util.stream.Collectors;
 
@@ -56,8 +60,20 @@ public class MedicineController {
         });
     }
 
-    public void addMedicineAction() {
-
+    public void addMedicineAction(ActionEvent event) {
+        var parent = ((Node)event.getSource()).getScene().getWindow();
+        var addMedController = ViewManager.showAddMedicineView(parent);
+        rootPane.requestFocus();
+        if (addMedController == null) {
+            System.out.println("addMedicineAction [Error]: addMedController is null");
+            return;
+        }
+        if (!addMedController.hasResult()) {
+            return;
+        }
+        Medicine m = addMedController.getResultMedicine();
+        medicineService.addMedicine(m);
+        medicines.add(new MedicineWrapper(m));
     }
 
     public void removeMedicineAction() {
