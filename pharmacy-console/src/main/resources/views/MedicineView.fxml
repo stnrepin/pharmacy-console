@@ -51,17 +51,17 @@
                 </HBox>
             </VBox>
         </HBox>
-        <JFXTreeTableView fx:id="treeTable" VBox.vgrow="ALWAYS" maxHeight="Infinity"
+        <JFXTreeTableView fx:id="medicineTable" VBox.vgrow="ALWAYS" maxHeight="Infinity"
                           styleClass="phcy">
             <columns>
-                <JFXTreeTableColumn text="ID"
-                                    prefWidth="${treeTable.width*0.17}" />
-                <JFXTreeTableColumn text="Name"
-                                    prefWidth="${treeTable.width*0.49}"/>
-                <JFXTreeTableColumn text="Quantity"
-                                    prefWidth="${treeTable.width*0.17}" />
-                <JFXTreeTableColumn text="Unit Price"
-                                    prefWidth="${treeTable.width*0.17}"/>
+                <JFXTreeTableColumn fx:id="medicineIdColumn" text="ID" resizable="false"
+                                    prefWidth="${medicineTable.width*0.17}" />
+                <JFXTreeTableColumn fx:id="medicineNameColumn" text="Name" resizable="false"
+                                    prefWidth="${medicineTable.width*0.49}"/>
+                <JFXTreeTableColumn fx:id="medicineQuantityColumn" text="Quantity" resizable="false"
+                                    prefWidth="${medicineTable.width*0.17}" />
+                <JFXTreeTableColumn fx:id="medicinePriceColumn" text="Unit Price" resizable="false"
+                                    prefWidth="${medicineTable.width*0.17}"/>
             </columns>
         </JFXTreeTableView>
     </VBox>
