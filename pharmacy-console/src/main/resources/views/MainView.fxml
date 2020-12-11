@@ -11,13 +11,13 @@
                 AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"
                 AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
         <Tab text="Medicine">
-            <fx:include source="MedicineView.fxml" />
+            <fx:include fx:id="medicine" source="MedicineView.fxml" />
         </Tab>
         <Tab text="Diseases">
-            <fx:include source="DiseaseView.fxml" />
+            <fx:include fx:id="diseases" source="DiseaseView.fxml" />
         </Tab>
         <Tab text="Orders">
-            <fx:include source="MedicineOrderView.fxml" />
+            <fx:include fx:id="medicineOrder" source="MedicineOrderView.fxml" />
         </Tab>
     </JFXTabPane>
 
