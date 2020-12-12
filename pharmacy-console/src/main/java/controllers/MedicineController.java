@@ -12,6 +12,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import models.Medicine;
+import services.impl.DiseaseServiceImpl;
 import services.impl.MedicineServiceImpl;
 import utils.ViewManager;
 
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 public class MedicineController {
     MedicineServiceImpl medicineService;
+    DiseaseServiceImpl diseaseService;
     private List<Medicine> allMedicines;
     private final ObservableList<MedicineWrapper> medicineWrappers;
 
@@ -68,7 +70,11 @@ public class MedicineController {
 
     public void addMedicineAction(ActionEvent event) {
         var parent = ((Node)event.getSource()).getScene().getWindow();
-        var addMedController = ViewManager.showAddMedicineView(parent);
+
+        var addMedController = new AddMedicineController();
+        addMedController.setDiseaseService(diseaseService);
+
+        ViewManager.showAddMedicineView(parent, addMedController);
         rootPane.requestFocus();
         if (addMedController == null) {
             System.out.println("addMedicineAction [Error]: addMedController is null");
@@ -104,6 +110,10 @@ public class MedicineController {
     public void setMedicineService(MedicineServiceImpl medicineService) {
         this.medicineService = medicineService;
         loadMedicines();
+    }
+
+    public void setDiseaseService(DiseaseServiceImpl diseaseService) {
+        this.diseaseService = diseaseService;
     }
 
     private void loadMedicines() {

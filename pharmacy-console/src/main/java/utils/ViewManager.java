@@ -18,13 +18,21 @@ public class ViewManager {
         showView("/views/MainView.fxml", new MainWindowOpeningStrategy(stage));
     }
 
-    public static AddMedicineController showAddMedicineView(Window parent) {
-        return showView("/views/AddMedicineView.fxml", new ModalWindowOpeningStrategy(parent));
+    public static void showAddMedicineView(Window parent, AddMedicineController c) {
+        showView("/views/AddMedicineView.fxml", c, new ModalWindowOpeningStrategy(parent));
     }
 
-    private static <T> T showView(String url, WindowOpeningStrategy openingStrategy) {
+    private static <T> void showView(String url, WindowOpeningStrategy openingStrategy) {
+        showView(url, null, openingStrategy);
+    }
+
+    private static <T> void showView(String url, T ctl, WindowOpeningStrategy openingStrategy) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(ViewManager.class.getResource(url));
+
+        if (ctl != null) {
+            fxmlLoader.setController(ctl);
+        }
 
         Parent win;
         try {
@@ -32,15 +40,13 @@ public class ViewManager {
         } catch (IOException e) {
             System.out.println("showView [Error] "  + e.getMessage());
             e.printStackTrace();
-            return null;
+            return;
         }
 
         Scene scene = new Scene(win);
         scene.getStylesheets().add(mainCustomStyle);
 
         openingStrategy.open(win, scene);
-
-        return fxmlLoader.getController();
     }
 }
 

@@ -6,8 +6,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import models.Disease;
 import models.Medicine;
+import services.impl.DiseaseServiceImpl;
 
 public class AddMedicineController {
+    private DiseaseServiceImpl diseaseService;
     private boolean hasResult = false;
 
     @FXML private JFXTextField nameField;
@@ -38,10 +40,14 @@ public class AddMedicineController {
                                Integer.parseInt(quantityField.getText()));
 
         for (var diseaseName : diseasesField.getText().trim().split(";++")) {
-            med.addTargetDisease(new Disease(diseaseName));
+            med.addTargetDisease(diseaseService.findByNameOrCreate(diseaseName));
         }
 
         return med;
+    }
+
+    public void setDiseaseService(DiseaseServiceImpl diseaseService) {
+        this.diseaseService = diseaseService;
     }
 
     private void close() {
