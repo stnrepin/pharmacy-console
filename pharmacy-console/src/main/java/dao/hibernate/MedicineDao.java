@@ -28,8 +28,9 @@ public class MedicineDao extends DaoCrudOperations<Integer, Medicine> implements
     public List<Medicine> findAllFor(Disease disease) {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
             var query= em.createQuery("""
-                                select d.targetMedicines
+                                select m
                                 from Disease d
+                                join d.targetMedicines m
                                 where d.id = :id
                                 """,
                                 Medicine.class);

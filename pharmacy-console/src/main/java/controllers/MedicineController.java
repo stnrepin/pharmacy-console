@@ -1,8 +1,6 @@
 package controllers;
 
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -12,17 +10,24 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
-import javafx.stage.Stage;
+import javafx.scene.layout.AnchorPane;
 import models.Medicine;
 import services.impl.MedicineServiceImpl;
 import utils.ViewManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MedicineController {
     MedicineServiceImpl medicineService;
-    private ObservableList<MedicineWrapper> medicines;
+    private List<Medicine> allMedicines;
+    private final ObservableList<MedicineWrapper> medicineWrappers;
 
+    @FXML public AnchorPane rootPane;
+    @FXML public JFXToggleButton filterByDiseaseToggle;
+    @FXML public JFXTextField filterField;
     @FXML public JFXTreeTableView<MedicineWrapper> medicineTable;
     @FXML public JFXTreeTableColumn<MedicineWrapper, Integer> medicineIdColumn;
     @FXML public JFXTreeTableColumn<MedicineWrapper, String>  medicineNameColumn;
@@ -30,7 +35,8 @@ public class MedicineController {
     @FXML public JFXTreeTableColumn<MedicineWrapper, Integer> medicinePriceColumn;
 
     public MedicineController() {
-        medicines = FXCollections.observableArrayList();
+        allMedicines = new ArrayList<>();
+        medicineWrappers = FXCollections.observableArrayList();
     }
 
     public void initialize() {
@@ -48,7 +54,7 @@ public class MedicineController {
         );
 
         TreeItem<MedicineWrapper> root =
-                new RecursiveTreeItem<>(medicines, RecursiveTreeObject::getChildren);
+                new RecursiveTreeItem<>(medicineWrappers, RecursiveTreeObject::getChildren);
         medicineTable.setRoot(root);
         medicineTable.setShowRoot(false);
 
@@ -73,7 +79,8 @@ public class MedicineController {
         }
         Medicine m = addMedController.getResultMedicine();
         medicineService.addMedicine(m);
-        medicines.add(new MedicineWrapper(m));
+        allMedicines.add(m);
+        medicineWrappers.add(new MedicineWrapper(m));
     }
 
     public void removeMedicineAction() {
@@ -84,12 +91,14 @@ public class MedicineController {
 
     }
 
-    public void filterByDisease() {
-
-    }
-
-    public void resetFilterByDisease() {
-
+    public void filterByDiseaseStateChanged() {
+        if (filterByDiseaseToggle.isSelected()) {
+            var name = filterField.getText();
+            var newMedicines = medicineService.findAllMedicinesFor(name);
+            setWrappersWith(newMedicines);
+        } else {
+            setWrappersWith(allMedicines);
+        }
     }
 
     public void setMedicineService(MedicineServiceImpl medicineService) {
@@ -98,11 +107,15 @@ public class MedicineController {
     }
 
     private void loadMedicines() {
-        medicines.clear();
-        var newMedicines = medicineService.findAllMedicines();
-        medicines.setAll(newMedicines.stream()
-                                     .map(MedicineWrapper::new)
-                                     .collect(Collectors.toList()));
+        allMedicines = medicineService.findAllMedicines();
+        setWrappersWith(allMedicines);
+    }
+
+    private void setWrappersWith(Collection<Medicine> ms) {
+        medicineWrappers.clear();
+        medicineWrappers.setAll(ms.stream()
+                                  .map(MedicineWrapper::new)
+                                  .collect(Collectors.toList()));
     }
 
     private static class MedicineWrapper extends RecursiveTreeObject<MedicineWrapper> {

@@ -1,5 +1,6 @@
 package controllers;
 
+import dao.hibernate.DiseaseDao;
 import dao.hibernate.MedicineDao;
 import dao.hibernate.MedicineOrderDao;
 import javafx.fxml.FXML;
@@ -16,7 +17,7 @@ public class MainController {
 
     public void initialize() {
         // TODO: inject
-        medicineService = new MedicineServiceImpl(new MedicineDao());
+        medicineService = new MedicineServiceImpl(new MedicineDao(), new DiseaseDao());
         medicineOrderService = new MedicineOrderServiceImpl(new MedicineOrderDao());
 
         medicineController.setMedicineService(medicineService);
