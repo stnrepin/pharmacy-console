@@ -35,7 +35,7 @@
                     <MaterialIconView glyphName="EDIT" glyphSize="60" />
                 </graphic>
             </JFXButton>
-            <JFXButton styleClass="phcy-action-button">
+            <JFXButton styleClass="phcy-action-button" onAction="#createOrderAction">
                 <graphic>
                     <MaterialIconView glyphName="ADD_SHOPPING_CART" glyphSize="60" />
                 </graphic>
@@ -59,13 +59,13 @@
                           styleClass="phcy">
             <columns>
                 <JFXTreeTableColumn fx:id="medicineIdColumn" text="ID" resizable="false"
-                                    prefWidth="${medicineTable.width*0.17}" />
+                                    prefWidth="${medicineTable.width*0.17}" sortable="false" />
                 <JFXTreeTableColumn fx:id="medicineNameColumn" text="Name" resizable="false"
-                                    prefWidth="${medicineTable.width*0.49}"/>
+                                    prefWidth="${medicineTable.width*0.49}" sortable="false" />
                 <JFXTreeTableColumn fx:id="medicineQuantityColumn" text="Quantity" resizable="false"
-                                    prefWidth="${medicineTable.width*0.17}" />
+                                    prefWidth="${medicineTable.width*0.17}" sortable="false" />
                 <JFXTreeTableColumn fx:id="medicinePriceColumn" text="Unit Price" resizable="false"
-                                    prefWidth="${medicineTable.width*0.17}"/>
+                                    prefWidth="${medicineTable.width*0.17}" sortable="false" />
             </columns>
         </JFXTreeTableView>
     </VBox>

@@ -11,8 +11,10 @@ import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Window;
 import models.Medicine;
 import services.impl.DiseaseServiceImpl;
+import services.impl.MedicineOrderServiceImpl;
 import services.impl.MedicineServiceImpl;
 import utils.ViewManager;
 
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class MedicineController {
     private MedicineServiceImpl medicineService;
     private DiseaseServiceImpl diseaseService;
+    private MedicineOrderServiceImpl medicineOrderService;
     private List<Medicine> allMedicines;
     private final ObservableList<MedicineWrapper> medicineWrappers;
 
@@ -69,12 +72,10 @@ public class MedicineController {
     }
 
     public void addMedicineAction(ActionEvent event) {
-        var parent = ((Node)event.getSource()).getScene().getWindow();
-
         var addMedController = new AddMedicineController();
         addMedController.setDiseaseService(diseaseService);
 
-        ViewManager.showAddMedicineView(parent, addMedController);
+        ViewManager.showAddMedicineView(getWindowFromEvent(event), addMedController);
         rootPane.requestFocus();
         if (!addMedController.hasResult()) {
             return;
@@ -98,13 +99,31 @@ public class MedicineController {
             }
             medicineService.removeMedicine(medicine);
             allMedicines.removeIf(x -> x.getId() == medicine.getId());
-            //noinspection SuspiciousMethodCalls
             medicineWrappers.removeIf(x -> x.getIdProperty().getValue() == medicine.getId());
         }
     }
 
-    public void createOrderAction() {
+    public void createOrderAction(ActionEvent event) {
+        if (medicineTable.getSelectionModel().isEmpty()) {
+            return;
+        }
+        var selectedList = medicineTable.getSelectionModel().getSelectedIndices();
+        if (selectedList.size() != 1) {
+            return;
+        }
+        var selected = selectedList.get(0);
 
+        var mWrapped = medicineWrappers.get(selected);
+        var m = mWrapped.getWrappedMedicine();
+        var addOrderController = new AddMedicineOrderController(m);
+        ViewManager.showAddOrderView(getWindowFromEvent(event), addOrderController);
+        rootPane.requestFocus();
+        if (!addOrderController.hasResult()) {
+            return;
+        }
+        var quantity = addOrderController.getQuantityToOrder();
+        medicineOrderService.orderMedicine(m.getId(), quantity);
+        mWrapped.update();
     }
 
     public void filterByDiseaseStateChanged() {
@@ -126,6 +145,10 @@ public class MedicineController {
         this.diseaseService = diseaseService;
     }
 
+    public void setMedicineOrderService(MedicineOrderServiceImpl medicineOrderService) {
+        this.medicineOrderService = medicineOrderService;
+    }
+
     private void loadMedicines() {
         allMedicines = medicineService.findAllMedicines();
         setWrappersWith(allMedicines);
@@ -138,19 +161,33 @@ public class MedicineController {
                                   .collect(Collectors.toList()));
     }
 
+    private Window getWindowFromEvent(ActionEvent event) {
+        return ((Node)event.getSource()).getScene().getWindow();
+    }
+
     private static class MedicineWrapper extends RecursiveTreeObject<MedicineWrapper> {
+        private final Medicine wrapped;
         private final IntegerProperty id;
         private final StringProperty name;
         private final IntegerProperty quantity;
         private final IntegerProperty price;
 
         public MedicineWrapper(Medicine m) {
+            wrapped = m;
             id = new SimpleIntegerProperty(m.getId());
             name = new SimpleStringProperty(m.getName());
             quantity = new SimpleIntegerProperty(m.getCount());
             price = new SimpleIntegerProperty(m.getPrice());
         }
 
+        public void update() {
+            id.setValue(wrapped.getId());
+            name.setValue(wrapped.getName());
+            quantity.setValue(wrapped.getCount());
+            price.setValue(wrapped.getPrice());
+        }
+
+        public Medicine getWrappedMedicine() { return wrapped; }
         public IntegerProperty getIdProperty() { return id; }
         public StringProperty getNameProperty() { return name; }
         public IntegerProperty getQuantityProperty() { return quantity; }

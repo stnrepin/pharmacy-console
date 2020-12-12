@@ -9,7 +9,7 @@ import utils.PersistenceEntityManagerUtils;
 public class MedicineDao extends DaoCrudOperations<Integer, Medicine> implements dao.MedicineDao  {
     public List<Medicine> findAll() {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
-            return em.createQuery("from models.Medicine", Medicine.class).getResultList();
+            return em.createQuery("from models.Medicine order by id asc", Medicine.class).getResultList();
         });
     }
 
@@ -32,6 +32,7 @@ public class MedicineDao extends DaoCrudOperations<Integer, Medicine> implements
                                 from Disease d
                                 join d.targetMedicines m
                                 where d.id = :id
+                                order by m.id asc
                                 """,
                                 Medicine.class);
             query.setParameter("id", disease.getId());

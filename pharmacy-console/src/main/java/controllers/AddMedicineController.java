@@ -2,34 +2,16 @@ package controllers;
 
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import models.Disease;
 import models.Medicine;
 import services.impl.DiseaseServiceImpl;
 
-public class AddMedicineController {
+public class AddMedicineController extends ModalControllerBase {
     private DiseaseServiceImpl diseaseService;
-    private boolean hasResult = false;
 
     @FXML private JFXTextField nameField;
     @FXML private JFXTextField priceField;
     @FXML private JFXTextField quantityField;
     @FXML private JFXTextField diseasesField;
-
-    public void ok() {
-        hasResult = true;
-        close();
-    }
-
-    public void cancel() {
-        hasResult = false;
-        close();
-    }
-
-    public boolean hasResult() {
-        return hasResult;
-    }
 
     public Medicine getResultMedicine() {
         // TODO: validate hasResult
@@ -48,10 +30,5 @@ public class AddMedicineController {
 
     public void setDiseaseService(DiseaseServiceImpl diseaseService) {
         this.diseaseService = diseaseService;
-    }
-
-    private void close() {
-        Stage stage = (Stage)nameField.getScene().getWindow();
-        stage.close();
     }
 }

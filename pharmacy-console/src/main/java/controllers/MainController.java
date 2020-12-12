@@ -1,8 +1,8 @@
 package controllers;
 
-import dao.hibernate.DiseaseDao;
-import dao.hibernate.MedicineDao;
-import dao.hibernate.MedicineOrderDao;
+import dao.DiseaseDao;
+import dao.MedicineDao;
+import dao.MedicineOrderDao;
 import javafx.fxml.FXML;
 import services.impl.DiseaseServiceImpl;
 import services.impl.MedicineOrderServiceImpl;
@@ -13,17 +13,21 @@ public class MainController {
     @FXML DiseasesController diseasesController;
     @FXML MedicineOrderController medicineOrderController;
 
-    MedicineServiceImpl medicineService;
-    DiseaseServiceImpl diseaseService;
-    MedicineOrderServiceImpl medicineOrderService;
+    private final MedicineDao medicineDao = new dao.hibernate.MedicineDao();
+    private final DiseaseDao diseaseDao = new dao.hibernate.DiseaseDao();
+    private final MedicineOrderDao medicineOrderDao = new dao.hibernate.MedicineOrderDao();
+
+    private final MedicineServiceImpl medicineService =
+            new MedicineServiceImpl(medicineDao, diseaseDao);
+    private final DiseaseServiceImpl diseaseService =
+            new DiseaseServiceImpl(diseaseDao);
+    private final MedicineOrderServiceImpl medicineOrderService =
+            new MedicineOrderServiceImpl(medicineDao, medicineOrderDao);
 
     public void initialize() {
         // TODO: inject
-        medicineService = new MedicineServiceImpl(new MedicineDao(), new DiseaseDao());
-        diseaseService = new DiseaseServiceImpl(new DiseaseDao());
-        medicineOrderService = new MedicineOrderServiceImpl(new MedicineOrderDao());
-
         medicineController.setMedicineService(medicineService);
         medicineController.setDiseaseService(diseaseService);
+        medicineController.setMedicineOrderService(medicineOrderService);
     }
 }
