@@ -10,7 +10,7 @@ import services.impl.MedicineServiceImpl;
 
 public class MainController {
     @FXML MedicineController medicineController;
-    @FXML DiseasesController diseasesController;
+    @FXML DiseaseController diseasesController;
     @FXML MedicineOrderController medicineOrderController;
 
     private final MedicineDao medicineDao = new dao.hibernate.MedicineDao();
@@ -29,5 +29,7 @@ public class MainController {
         medicineController.setMedicineService(medicineService);
         medicineController.setDiseaseService(diseaseService);
         medicineController.setMedicineOrderService(medicineOrderService);
+
+        diseasesController.setDiseaseService(diseaseService);
     }
 }
