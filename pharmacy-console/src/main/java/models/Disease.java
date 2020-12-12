@@ -15,7 +15,14 @@ public class Disease {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "targetDiseases")
+    @ManyToMany(cascade =
+            {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
+            },
+            mappedBy = "targetDiseases")
     private List<Medicine> targetMedicines;
 
     public Disease() {

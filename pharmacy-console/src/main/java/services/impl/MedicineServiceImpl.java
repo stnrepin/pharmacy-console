@@ -24,8 +24,8 @@ public class MedicineServiceImpl {
         return medicineDao.findAll();
     }
 
-    public Medicine findMedicineByName(String name) {
-        return medicineDao.findByName(name);
+    public Medicine findMedicineById(int name) {
+        return medicineDao.read(name);
     }
 
     public List<Medicine> findAllMedicinesFor(String diseaseName) {
@@ -34,6 +34,10 @@ public class MedicineServiceImpl {
             return new ArrayList<>();
         }
         return medicineDao.findAllFor(disease);
+    }
+
+    public void removeMedicine(Medicine m) {
+        medicineDao.delete(m);
     }
 
     public boolean containsMedicine(Medicine medicine) {

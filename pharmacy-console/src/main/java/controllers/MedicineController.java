@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MedicineController {
-    MedicineServiceImpl medicineService;
-    DiseaseServiceImpl diseaseService;
+    private MedicineServiceImpl medicineService;
+    private DiseaseServiceImpl diseaseService;
     private List<Medicine> allMedicines;
     private final ObservableList<MedicineWrapper> medicineWrappers;
 
@@ -76,10 +76,6 @@ public class MedicineController {
 
         ViewManager.showAddMedicineView(parent, addMedController);
         rootPane.requestFocus();
-        if (addMedController == null) {
-            System.out.println("addMedicineAction [Error]: addMedController is null");
-            return;
-        }
         if (!addMedController.hasResult()) {
             return;
         }
@@ -90,7 +86,21 @@ public class MedicineController {
     }
 
     public void removeMedicineAction() {
-
+        if (medicineTable.getSelectionModel().isEmpty()) {
+            return;
+        }
+        var selected = medicineTable.getSelectionModel().getSelectedIndices();
+        for (var s : selected) {
+            var medicine =
+                    medicineService.findMedicineById(medicineWrappers.get(s).getIdProperty().getValue());
+            if (medicine == null) {
+                continue;
+            }
+            medicineService.removeMedicine(medicine);
+            allMedicines.removeIf(x -> x.getId() == medicine.getId());
+            //noinspection SuspiciousMethodCalls
+            medicineWrappers.removeIf(x -> x.getIdProperty().getValue() == medicine.getId());
+        }
     }
 
     public void createOrderAction() {

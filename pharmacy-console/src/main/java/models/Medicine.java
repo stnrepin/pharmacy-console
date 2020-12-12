@@ -21,7 +21,13 @@ public class Medicine {
     @Column(name = "count")
     private int count;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade =
+            {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
+            })
     @JoinTable(name = "medicine_disease",
             joinColumns = @JoinColumn(name = "med_id"),
             inverseJoinColumns = @JoinColumn(name = "dis_id")
