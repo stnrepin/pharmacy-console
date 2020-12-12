@@ -27,13 +27,23 @@
 
             <Label text="Unit price" GridPane.columnIndex="0" GridPane.rowIndex="1"
                    styleClass="phcy-text" />
-            <JFXTextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="1"
-                          styleClass="phcy-text,phcy-text-field" />
+            <Spinner fx:id="priceSpinner" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                     editable="true">
+                <valueFactory>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory
+                            fx:id="priceSpinnerValueFactory" min="0" />
+                </valueFactory>
+            </Spinner>
 
             <Label text="Available quantity" GridPane.columnIndex="0" GridPane.rowIndex="2"
                    styleClass="phcy-text" />
-            <JFXTextField fx:id="quantityField" GridPane.columnIndex="1" GridPane.rowIndex="2"
-                          styleClass="phcy-text,phcy-text-field" />
+            <Spinner fx:id="quantitySpinner" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                     editable="true">
+                <valueFactory>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory
+                            fx:id="quantitySpinnerValueFactory" min="0" />
+                </valueFactory>
+            </Spinner>
 
             <Label text="Treat:" GridPane.columnIndex="0" GridPane.rowIndex="3"
                    styleClass="phcy-text" />

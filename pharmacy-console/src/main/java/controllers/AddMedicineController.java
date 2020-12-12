@@ -3,6 +3,7 @@ package controllers;
 import com.jfoenix.controls.JFXTextField;
 import dao.MedicineDao;
 import javafx.fxml.FXML;
+import javafx.scene.control.SpinnerValueFactory;
 import models.Medicine;
 import services.impl.DiseaseServiceImpl;
 
@@ -12,10 +13,10 @@ public class AddMedicineController extends ModalControllerBase {
     private Medicine medicine;
     private DiseaseServiceImpl diseaseService;
 
-    @FXML private JFXTextField nameField;
-    @FXML private JFXTextField priceField;
-    @FXML private JFXTextField quantityField;
-    @FXML private JFXTextField diseasesField;
+    @FXML public JFXTextField nameField;
+    @FXML public SpinnerValueFactory.IntegerSpinnerValueFactory priceSpinnerValueFactory;
+    @FXML public SpinnerValueFactory.IntegerSpinnerValueFactory quantitySpinnerValueFactory;
+    @FXML public JFXTextField diseasesField;
 
     public AddMedicineController() {
         this(new Medicine());
@@ -27,8 +28,10 @@ public class AddMedicineController extends ModalControllerBase {
 
     public void initialize() {
         nameField.setText(medicine.getName());
-        priceField.setText(String.valueOf(medicine.getPrice()));
-        quantityField.setText(String.valueOf(medicine.getCount()));
+        priceSpinnerValueFactory.setValue(medicine.getPrice());
+        priceSpinnerValueFactory.setMax(Integer.MAX_VALUE);
+        quantitySpinnerValueFactory.setValue(medicine.getCount());
+        quantitySpinnerValueFactory.setMax(Integer.MAX_VALUE);
 
         var ds = medicine.getTargetDiseases();
         var sb = new StringBuilder();
@@ -46,8 +49,8 @@ public class AddMedicineController extends ModalControllerBase {
         // TODO: validate fields
 
         medicine.setName(nameField.getText());
-        medicine.setPrice(Integer.parseInt(priceField.getText()));
-        medicine.setCount(Integer.parseInt(quantityField.getText()));
+        medicine.setPrice(priceSpinnerValueFactory.getValue());
+        medicine.setCount(quantitySpinnerValueFactory.getValue());
 
         medicine.setTargetDiseases(new ArrayList<>());
         for (var diseaseName : diseasesField.getText().trim().split(";++")) {
