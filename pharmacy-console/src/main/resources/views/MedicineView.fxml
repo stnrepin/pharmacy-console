@@ -30,7 +30,7 @@
                     <MaterialIconView glyphName="REMOVE" glyphSize="60" />
                 </graphic>
             </JFXButton>
-            <JFXButton styleClass="phcy-action-button">
+            <JFXButton styleClass="phcy-action-button" onAction="#editMedicineAction">
                 <graphic>
                     <MaterialIconView glyphName="EDIT" glyphSize="60" />
                 </graphic>

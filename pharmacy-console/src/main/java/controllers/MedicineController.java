@@ -103,15 +103,31 @@ public class MedicineController {
         }
     }
 
+    public void editMedicineAction(ActionEvent event) {
+        var selected = getSelectedIndexOrNull();
+        if (selected == null) {
+            return;
+        }
+
+        var mWrapped = medicineWrappers.get(selected);
+        var addMedController = new AddMedicineController(mWrapped.getWrappedMedicine());
+        addMedController.setDiseaseService(diseaseService);
+
+        ViewManager.showAddMedicineView(getWindowFromEvent(event), addMedController);
+        rootPane.requestFocus();
+        if (!addMedController.hasResult()) {
+            return;
+        }
+        var m = addMedController.getResultMedicine();
+        medicineService.updateMedicine(m);
+        mWrapped.setWrappedMedicine(m);
+    }
+
     public void createOrderAction(ActionEvent event) {
-        if (medicineTable.getSelectionModel().isEmpty()) {
+        var selected = getSelectedIndexOrNull();
+        if (selected == null) {
             return;
         }
-        var selectedList = medicineTable.getSelectionModel().getSelectedIndices();
-        if (selectedList.size() != 1) {
-            return;
-        }
-        var selected = selectedList.get(0);
 
         var mWrapped = medicineWrappers.get(selected);
         var m = mWrapped.getWrappedMedicine();
@@ -161,12 +177,23 @@ public class MedicineController {
                                   .collect(Collectors.toList()));
     }
 
+    private Integer getSelectedIndexOrNull() {
+        if (medicineTable.getSelectionModel().isEmpty()) {
+            return null;
+        }
+        var selectedList = medicineTable.getSelectionModel().getSelectedIndices();
+        if (selectedList.size() != 1) {
+            return null;
+        }
+        return selectedList.get(0);
+    }
+
     private Window getWindowFromEvent(ActionEvent event) {
         return ((Node)event.getSource()).getScene().getWindow();
     }
 
     private static class MedicineWrapper extends RecursiveTreeObject<MedicineWrapper> {
-        private final Medicine wrapped;
+        private Medicine wrapped;
         private final IntegerProperty id;
         private final StringProperty name;
         private final IntegerProperty quantity;
@@ -185,6 +212,11 @@ public class MedicineController {
             name.setValue(wrapped.getName());
             quantity.setValue(wrapped.getCount());
             price.setValue(wrapped.getPrice());
+        }
+
+        public void setWrappedMedicine(Medicine m) {
+            wrapped = m;
+            update();
         }
 
         public Medicine getWrappedMedicine() { return wrapped; }

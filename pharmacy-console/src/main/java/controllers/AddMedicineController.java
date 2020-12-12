@@ -1,11 +1,15 @@
 package controllers;
 
 import com.jfoenix.controls.JFXTextField;
+import dao.MedicineDao;
 import javafx.fxml.FXML;
 import models.Medicine;
 import services.impl.DiseaseServiceImpl;
 
+import java.util.ArrayList;
+
 public class AddMedicineController extends ModalControllerBase {
+    private Medicine medicine;
     private DiseaseServiceImpl diseaseService;
 
     @FXML private JFXTextField nameField;
@@ -13,19 +17,44 @@ public class AddMedicineController extends ModalControllerBase {
     @FXML private JFXTextField quantityField;
     @FXML private JFXTextField diseasesField;
 
+    public AddMedicineController() {
+        this(new Medicine());
+    }
+
+    public AddMedicineController(Medicine initial) {
+        medicine = initial;
+    }
+
+    public void initialize() {
+        nameField.setText(medicine.getName());
+        priceField.setText(String.valueOf(medicine.getPrice()));
+        quantityField.setText(String.valueOf(medicine.getCount()));
+
+        var ds = medicine.getTargetDiseases();
+        var sb = new StringBuilder();
+        for (var i = 0; i < ds.size(); i++) {
+            if (i != 0) {
+                sb.append("; ");
+            }
+            sb.append(ds.get(i).getName());
+        }
+        diseasesField.setText(sb.toString());
+    }
+
     public Medicine getResultMedicine() {
         // TODO: validate hasResult
         // TODO: validate fields
 
-        var med = new Medicine(nameField.getText(),
-                               Integer.parseInt(priceField.getText()),
-                               Integer.parseInt(quantityField.getText()));
+        medicine.setName(nameField.getText());
+        medicine.setPrice(Integer.parseInt(priceField.getText()));
+        medicine.setCount(Integer.parseInt(quantityField.getText()));
 
+        medicine.setTargetDiseases(new ArrayList<>());
         for (var diseaseName : diseasesField.getText().trim().split(";++")) {
-            med.addTargetDisease(diseaseService.findByNameOrCreate(diseaseName));
+            medicine.addTargetDisease(diseaseService.findByNameOrCreate(diseaseName));
         }
 
-        return med;
+        return medicine;
     }
 
     public void setDiseaseService(DiseaseServiceImpl diseaseService) {

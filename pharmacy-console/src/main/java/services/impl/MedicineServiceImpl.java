@@ -20,6 +20,10 @@ public class MedicineServiceImpl {
         medicineDao.create(medicine);
     }
 
+    public void updateMedicine(Medicine medicine) {
+        medicineDao.update(medicine);
+    }
+
     public List<Medicine> findAllMedicines() {
         return medicineDao.findAll();
     }
