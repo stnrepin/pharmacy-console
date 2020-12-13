@@ -17,6 +17,16 @@
           AnchorPane.leftAnchor="10" AnchorPane.topAnchor="20"
           AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="20">
         <HBox alignment="CENTER_LEFT">
+            <VBox spacing="10" styleClass="phcy-panel" minWidth="300">
+                <padding>
+                    <Insets left="10" top="10" right="10" bottom="10" />
+                </padding>
+                <Text text="Info" styleClass="phcy-text,phcy-text-h" />
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Text text="Total cost:" styleClass="phcy-text" />
+                    <Text text="${controller.ordersTotalCost}" styleClass="phcy-text" />
+                </HBox>
+            </VBox>
             <VBox spacing="10" styleClass="phcy-panel"
                   HBox.hgrow="ALWAYS" maxWidth="Infinity">
                 <padding>

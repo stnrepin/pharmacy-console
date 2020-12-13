@@ -9,6 +9,7 @@ public interface MedicineOrderDao extends DaoCrudOperations<Integer, MedicineOrd
     List<MedicineOrder> findAll();
     List<MedicineOrder> findAllMedicineOrdersInPeriod(Instant begin, Instant end);
     int getMedicineOrderCountInPeriod(Instant begin, Instant end);
-    int getOrderTotalCost(Instant today, Instant monthAgo);
+    int calcTotalCost();
+    int calcTotalCost(Instant today, Instant monthAgo);
     void orderMedicine(int medId, int count);
 }

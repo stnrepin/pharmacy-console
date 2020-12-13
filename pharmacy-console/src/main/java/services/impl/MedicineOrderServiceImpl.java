@@ -34,9 +34,11 @@ public class MedicineOrderServiceImpl {
         return medicineOrderDao.getMedicineOrderCountInPeriod(begin, end);
     }
 
-    public int getOrderTotalCostMonth() {
-        var now = Instant.now();
-        var monthAgo = now.minus(30, ChronoUnit.DAYS);
-        return medicineOrderDao.getOrderTotalCost(monthAgo, now);
+    public int calcTotalCost() {
+        return medicineOrderDao.calcTotalCost();
+    }
+
+    public int calcTotalCostInPeriod(Instant from, Instant to) {
+        return medicineOrderDao.calcTotalCost(from, to);
     }
 }

@@ -28,7 +28,10 @@ import java.util.stream.Collectors;
 public class MedicineOrderController {
     private MedicineOrderServiceImpl medicineOrderService;
     private List<MedicineOrder> allMedicineOrders;
+    private int allOrdersTotalCost;
     private final ObservableList<MedicineOrderController.MedicineOrderWrapper> medicineOrderWrappers;
+
+    public IntegerProperty ordersTotalCost;
 
     @FXML
     public AnchorPane rootPane;
@@ -52,6 +55,7 @@ public class MedicineOrderController {
     public MedicineOrderController() {
         allMedicineOrders = new ArrayList<>();
         medicineOrderWrappers = FXCollections.observableArrayList();
+        ordersTotalCost = new SimpleIntegerProperty(0);
     }
 
     public void initialize() {
@@ -92,8 +96,11 @@ public class MedicineOrderController {
             var from = dateFromPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant();
             var to = dateToPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant();;
             var newOrders = medicineOrderService.findAllInPeriod(from, to);
+            var totalCost = medicineOrderService.calcTotalCostInPeriod(from, to);
+            setOrdersTotalCost(totalCost);
             setWrappersWith(newOrders);
         } else {
+            setOrdersTotalCost(allOrdersTotalCost);
             setWrappersWith(allMedicineOrders);
         }
     }
@@ -103,8 +110,22 @@ public class MedicineOrderController {
         loadMedicineOrders();
     }
 
+    public int getOrdersTotalCost() {
+        return ordersTotalCost.getValue();
+    }
+
+    public void setOrdersTotalCost(int v) {
+        ordersTotalCost.setValue(v);
+    }
+
+    public IntegerProperty ordersTotalCostProperty() {
+        return ordersTotalCost;
+    }
+
     private void loadMedicineOrders() {
         allMedicineOrders = medicineOrderService.findAll();
+        allOrdersTotalCost = medicineOrderService.calcTotalCost();
+        setOrdersTotalCost(allOrdersTotalCost);
         setWrappersWith(allMedicineOrders);
     }
 

@@ -52,7 +52,20 @@ public class MedicineOrderDao extends DaoCrudOperations<Integer, MedicineOrder>
         });
     }
 
-    public int getOrderTotalCost(Instant begin, Instant end) {
+    public int calcTotalCost() {
+        return PersistenceEntityManagerUtils.doTransaction(em -> {
+            var query = em.createQuery("""
+                select sum(totalPrice)
+                from models.MedicineOrder
+                """,
+                Long.class
+            );
+            var res = query.getSingleResult();
+            return res == null ? 0 : res.intValue();
+        });
+    }
+
+    public int calcTotalCost(Instant begin, Instant end) {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
             var query = em.createQuery("""
                 select sum(totalPrice)
