@@ -14,6 +14,7 @@ public class DiseaseDao extends DaoCrudOperations<Integer, Disease> implements d
         });
     }
 
+    @Override
     public Disease findByName(String name) {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
             var query= em.createQuery("""

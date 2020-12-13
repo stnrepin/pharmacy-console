@@ -7,24 +7,14 @@ import models.Medicine;
 import utils.PersistenceEntityManagerUtils;
 
 public class MedicineDao extends DaoCrudOperations<Integer, Medicine> implements dao.MedicineDao  {
+    @Override
     public List<Medicine> findAll() {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
             return em.createQuery("from models.Medicine order by id asc", Medicine.class).getResultList();
         });
     }
 
-    public Medicine findByName(String name) {
-        return PersistenceEntityManagerUtils.doTransaction(em -> {
-            var query= em.createQuery("""
-                                from Medicine m
-                                where m.name = :name
-                                """,
-                    Medicine.class);
-            query.setParameter("name", name);
-            return query.getSingleResult();
-        });
-    }
-
+    @Override
     public List<Medicine> findAllFor(Disease disease) {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
             var query= em.createQuery("""

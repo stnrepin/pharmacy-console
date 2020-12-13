@@ -7,6 +7,5 @@ import models.Disease;
 
 public interface MedicineDao extends DaoCrudOperations<Integer, Medicine> {
     List<Medicine> findAll();
-    Medicine findByName(String name);
     List<Medicine> findAllFor(Disease disease);
 }

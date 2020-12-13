@@ -88,7 +88,7 @@ public class MedicineController {
             return;
         }
         Medicine m = addMedController.getResultMedicine();
-        medicineService.addMedicine(m);
+        medicineService.add(m);
         allMedicines.add(m);
         medicineWrappers.add(new MedicineWrapper(m));
         medicinesUpdatedEventSource.notifyAll(new MedicinesUpdatedEvent());
@@ -101,11 +101,11 @@ public class MedicineController {
         var selected = medicineTable.getSelectionModel().getSelectedIndices();
         for (var s : selected) {
             var medicine =
-                    medicineService.findMedicineById(medicineWrappers.get(s).getIdProperty().getValue());
+                    medicineService.findById(medicineWrappers.get(s).getIdProperty().getValue());
             if (medicine == null) {
                 continue;
             }
-            medicineService.removeMedicine(medicine);
+            medicineService.remove(medicine);
             allMedicines.removeIf(x -> x.getId() == medicine.getId());
             medicineWrappers.removeIf(x -> x.getIdProperty().getValue() == medicine.getId());
         }
@@ -127,7 +127,7 @@ public class MedicineController {
             return;
         }
         var m = addMedController.getResultMedicine();
-        medicineService.updateMedicine(m);
+        medicineService.update(m);
         mWrapped.setWrappedMedicine(m);
         medicinesUpdatedEventSource.notifyAll(new MedicinesUpdatedEvent());
     }
@@ -155,7 +155,7 @@ public class MedicineController {
     public void filterByDiseaseStateChanged() {
         if (filterByDiseaseToggle.isSelected()) {
             var name = filterField.getText();
-            var newMedicines = medicineService.findAllMedicinesFor(name);
+            var newMedicines = medicineService.findAllFor(name);
             setWrappersWith(newMedicines);
         } else {
             setWrappersWith(allMedicines);
@@ -184,7 +184,7 @@ public class MedicineController {
     }
 
     private void loadMedicines() {
-        allMedicines = medicineService.findAllMedicines();
+        allMedicines = medicineService.findAll();
         setWrappersWith(allMedicines);
     }
 

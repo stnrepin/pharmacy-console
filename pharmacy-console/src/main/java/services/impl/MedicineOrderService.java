@@ -25,7 +25,7 @@ public class MedicineOrderService implements services.MedicineOrderService {
 
     @Override
     public List<MedicineOrder> findAllInPeriod(Instant begin, Instant end) {
-        return medicineOrderDao.findAllMedicineOrdersInPeriod(begin, end);
+        return medicineOrderDao.findAllInPeriod(begin, end);
     }
 
     @Override

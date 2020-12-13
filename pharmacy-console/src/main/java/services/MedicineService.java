@@ -5,11 +5,11 @@ import models.Medicine;
 import java.util.List;
 
 public interface MedicineService {
-    void addMedicine(Medicine medicine);
-    void updateMedicine(Medicine medicine);
-    void removeMedicine(Medicine m);
+    void add(Medicine medicine);
+    void update(Medicine medicine);
+    void remove(Medicine m);
 
-    List<Medicine> findAllMedicines();
-    Medicine findMedicineById(int name);
-    List<Medicine> findAllMedicinesFor(String diseaseName);
+    List<Medicine> findAll();
+    Medicine findById(int name);
+    List<Medicine> findAllFor(String diseaseName);
 }

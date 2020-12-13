@@ -17,32 +17,32 @@ public class MedicineService implements services.MedicineService {
     }
 
     @Override
-    public void addMedicine(Medicine medicine) {
+    public void add(Medicine medicine) {
         medicineDao.create(medicine);
     }
 
     @Override
-    public void updateMedicine(Medicine medicine) {
+    public void update(Medicine medicine) {
         medicineDao.update(medicine);
     }
 
     @Override
-    public void removeMedicine(Medicine m) {
+    public void remove(Medicine m) {
         medicineDao.delete(m);
     }
 
     @Override
-    public List<Medicine> findAllMedicines() {
+    public List<Medicine> findAll() {
         return medicineDao.findAll();
     }
 
     @Override
-    public Medicine findMedicineById(int name) {
+    public Medicine findById(int name) {
         return medicineDao.read(name);
     }
 
     @Override
-    public List<Medicine> findAllMedicinesFor(String diseaseName) {
+    public List<Medicine> findAllFor(String diseaseName) {
         var disease = diseaseDao.findByName(diseaseName);
         if (disease == null) {
             return new ArrayList<>();

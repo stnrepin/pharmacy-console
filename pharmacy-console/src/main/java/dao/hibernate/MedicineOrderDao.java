@@ -12,6 +12,7 @@ import utils.PersistenceEntityManagerUtils;
 public class MedicineOrderDao extends DaoCrudOperations<Integer, MedicineOrder>
                               implements dao.MedicineOrderDao {
 
+    @Override
     public List<MedicineOrder> findAll() {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
             var query =
@@ -23,7 +24,8 @@ public class MedicineOrderDao extends DaoCrudOperations<Integer, MedicineOrder>
         });
     }
 
-    public List<MedicineOrder> findAllMedicineOrdersInPeriod(Instant begin, Instant end) {
+    @Override
+    public List<MedicineOrder> findAllInPeriod(Instant begin, Instant end) {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
             var query = em.createQuery("""
                 from models.MedicineOrder
@@ -37,21 +39,7 @@ public class MedicineOrderDao extends DaoCrudOperations<Integer, MedicineOrder>
         });
     }
 
-    public int getMedicineOrderCountInPeriod(Instant begin, Instant end) {
-        return PersistenceEntityManagerUtils.doTransaction(em -> {
-            var query = em.createQuery("""
-                select count(*)
-                from models.MedicineOrder
-                where orderDate between :beginDate and :endDate
-                """,
-                int.class
-            );
-            return query.setParameter("beginDate", begin)
-                        .setParameter("endDate", end)
-                        .getSingleResult();
-        });
-    }
-
+    @Override
     public int calcTotalCost() {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
             var query = em.createQuery("""
@@ -65,6 +53,7 @@ public class MedicineOrderDao extends DaoCrudOperations<Integer, MedicineOrder>
         });
     }
 
+    @Override
     public int calcTotalCost(Instant begin, Instant end) {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
             var query = em.createQuery("""
@@ -81,6 +70,7 @@ public class MedicineOrderDao extends DaoCrudOperations<Integer, MedicineOrder>
         });
     }
 
+    @Override
     public void orderMedicine(int medId, int count) {
         PersistenceEntityManagerUtils.doTransaction(em -> {
             var medicine = em.find(Medicine.class, medId);
