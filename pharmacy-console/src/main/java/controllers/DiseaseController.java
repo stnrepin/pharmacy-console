@@ -58,6 +58,26 @@ public class DiseaseController implements EventListener<MedicinesUpdatedEvent> {
         });
     }
 
+    public void removeAction() {
+        if (diseaseTable.getSelectionModel().isEmpty()) {
+            return;
+        }
+        var selected = diseaseTable.getSelectionModel().getSelectedIndices();
+        for (var s : selected) {
+            var disease =
+                    diseaseService.findById(diseaseWrappers.get(s).getIdProperty().getValue());
+            if (disease == null) {
+                continue;
+            }
+            if (disease.getTargetMedicines().size() != 0) {
+                return;
+            }
+            diseaseService.remove(disease);
+            allDiseases.removeIf(x -> x.getId() == disease.getId());
+            diseaseWrappers.removeIf(x -> x.getIdProperty().getValue() == disease.getId());
+        }
+    }
+
     public void setDiseaseService(DiseaseService diseaseService) {
         this.diseaseService = diseaseService;
         loadDiseases();
