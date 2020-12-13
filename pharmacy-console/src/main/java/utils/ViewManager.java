@@ -6,6 +6,8 @@ import controllers.WindowContainingControllerBase;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -29,6 +31,16 @@ public class ViewManager {
         showView("/views/AddMedicineOrderView.fxml", c, new ModalWindowOpeningStrategy(parent));
     }
 
+    public static void showException(Exception e) {
+        showError(e.toString());
+    }
+
+    public static void showError(String errorMessage) {
+        var message = "An error occurred:\n" + errorMessage;
+        var alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
+        alert.showAndWait();
+    }
+
     private static <T> void showView(String url, WindowOpeningStrategy openingStrategy) {
         showView(url, null, openingStrategy);
     }
@@ -47,6 +59,7 @@ public class ViewManager {
         } catch (IOException e) {
             System.out.println("showView [Error] "  + e.getMessage());
             e.printStackTrace();
+            showException(e);
             return;
         }
 

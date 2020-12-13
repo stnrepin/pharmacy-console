@@ -24,9 +24,14 @@ public class PersistenceEntityManagerUtils {
     public static <T> T doTransaction(EntityManagerCallback<T> callback) {
         var em = getEntityManager();
         em.getTransaction().begin();
-        var res = callback.call(entityManager);
-        em.getTransaction().commit();
-        return res;
+        try {
+            var res = callback.call(entityManager);
+            em.getTransaction().commit();
+            return res;
+        } catch (Exception ex) {
+            em.getTransaction().rollback();
+            throw ex;
+        }
     }
 
     public interface EntityManagerVoidCallback {
