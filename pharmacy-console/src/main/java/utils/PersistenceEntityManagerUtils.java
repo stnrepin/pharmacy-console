@@ -1,5 +1,7 @@
 package utils;
 
+import org.postgresql.util.PSQLException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
@@ -15,6 +17,17 @@ public class PersistenceEntityManagerUtils {
                 entityManager = emf.createEntityManager();
         }
         return entityManager;
+    }
+
+    public static boolean tryInitializeEntityManager() {
+        try {
+            getEntityManager();
+            return true;
+        } catch (Exception e) {
+            System.out.println("tryInitializeEntityManager() [Error] " + e.toString());
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public interface EntityManagerCallback<R> {
