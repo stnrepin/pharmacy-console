@@ -2,6 +2,8 @@ package controllers;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import controllers.events.MedicineOrderCreatedEvent;
+import controllers.events.MedicinesUpdatedEvent;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +19,7 @@ import services.impl.DiseaseServiceImpl;
 import services.impl.MedicineOrderServiceImpl;
 import services.impl.MedicineServiceImpl;
 import utils.ViewManager;
+import utils.event.EventSource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +32,8 @@ public class MedicineController {
     private MedicineOrderServiceImpl medicineOrderService;
     private List<Medicine> allMedicines;
     private final ObservableList<MedicineWrapper> medicineWrappers;
+    private final EventSource<MedicinesUpdatedEvent> medicinesUpdatedEventSource;
+    private final EventSource<MedicineOrderCreatedEvent> orderCreatedEventSource;
 
     @FXML public AnchorPane rootPane;
     @FXML public JFXToggleButton filterByDiseaseToggle;
@@ -42,6 +47,8 @@ public class MedicineController {
     public MedicineController() {
         allMedicines = new ArrayList<>();
         medicineWrappers = FXCollections.observableArrayList();
+        medicinesUpdatedEventSource = new EventSource<>();
+        orderCreatedEventSource = new EventSource<>();
     }
 
     public void initialize() {
@@ -84,6 +91,7 @@ public class MedicineController {
         medicineService.addMedicine(m);
         allMedicines.add(m);
         medicineWrappers.add(new MedicineWrapper(m));
+        medicinesUpdatedEventSource.notifyAll(new MedicinesUpdatedEvent());
     }
 
     public void removeMedicineAction() {
@@ -121,6 +129,7 @@ public class MedicineController {
         var m = addMedController.getResultMedicine();
         medicineService.updateMedicine(m);
         mWrapped.setWrappedMedicine(m);
+        medicinesUpdatedEventSource.notifyAll(new MedicinesUpdatedEvent());
     }
 
     public void createOrderAction(ActionEvent event) {
@@ -140,6 +149,7 @@ public class MedicineController {
         var quantity = addOrderController.getQuantityToOrder();
         medicineOrderService.orderMedicine(m.getId(), quantity);
         mWrapped.update();
+        orderCreatedEventSource.notifyAll(new MedicineOrderCreatedEvent());
     }
 
     public void filterByDiseaseStateChanged() {
@@ -163,6 +173,14 @@ public class MedicineController {
 
     public void setMedicineOrderService(MedicineOrderServiceImpl medicineOrderService) {
         this.medicineOrderService = medicineOrderService;
+    }
+
+    public EventSource<MedicinesUpdatedEvent> getMedicinesUpdatedEventSource() {
+        return medicinesUpdatedEventSource;
+    }
+
+    public EventSource<MedicineOrderCreatedEvent> getOrderCreatedEventSource() {
+        return orderCreatedEventSource;
     }
 
     private void loadMedicines() {

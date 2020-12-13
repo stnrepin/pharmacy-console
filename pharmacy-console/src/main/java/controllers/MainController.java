@@ -32,5 +32,8 @@ public class MainController {
         diseasesController.setDiseaseService(diseaseService);
 
         medicineOrderController.setMedicineOrderService(medicineOrderService);
+
+        medicineController.getMedicinesUpdatedEventSource().addListener(diseasesController);
+        medicineController.getOrderCreatedEventSource().addListener(medicineOrderController);
     }
 }

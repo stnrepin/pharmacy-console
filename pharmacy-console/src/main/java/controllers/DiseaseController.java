@@ -2,6 +2,7 @@ package controllers;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import controllers.events.MedicinesUpdatedEvent;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,13 +15,14 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import models.Disease;
 import services.impl.DiseaseServiceImpl;
+import utils.event.EventListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DiseaseController {
+public class DiseaseController implements EventListener<MedicinesUpdatedEvent> {
     private DiseaseServiceImpl diseaseService;
     private List<Disease> allDiseases;
     private final ObservableList<DiseaseWrapper> diseaseWrappers;
@@ -71,6 +73,10 @@ public class DiseaseController {
         diseaseWrappers.setAll(ms.stream()
                 .map(DiseaseController.DiseaseWrapper::new)
                 .collect(Collectors.toList()));
+    }
+
+    public void handle(MedicinesUpdatedEvent event) {
+        loadDiseases();
     }
 
     private static class DiseaseWrapper extends RecursiveTreeObject<DiseaseController.DiseaseWrapper> {

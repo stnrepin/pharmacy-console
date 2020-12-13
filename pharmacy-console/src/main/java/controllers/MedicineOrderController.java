@@ -2,6 +2,7 @@ package controllers;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import controllers.events.MedicineOrderCreatedEvent;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,6 +15,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import models.MedicineOrder;
 import services.impl.MedicineOrderServiceImpl;
+import utils.event.EventListener;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -25,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class MedicineOrderController {
+public class MedicineOrderController implements EventListener<MedicineOrderCreatedEvent> {
     private MedicineOrderServiceImpl medicineOrderService;
     private List<MedicineOrder> allMedicineOrders;
     private int allOrdersTotalCost;
@@ -120,6 +122,11 @@ public class MedicineOrderController {
 
     public IntegerProperty ordersTotalCostProperty() {
         return ordersTotalCost;
+    }
+
+    public void handle(MedicineOrderCreatedEvent event) {
+        filterByDateToggle.setSelected(false);
+        loadMedicineOrders();
     }
 
     private void loadMedicineOrders() {
