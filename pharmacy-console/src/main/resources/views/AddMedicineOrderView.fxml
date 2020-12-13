@@ -40,7 +40,7 @@
                      styleClass="phcy,phcy-text,phcy-text-field" editable="true">
                 <valueFactory>
                     <SpinnerValueFactory.IntegerSpinnerValueFactory
-                            fx:id="quantitySpinnerValueFactory" min="0" />
+                            fx:id="quantitySpinnerValueFactory" min="1" />
                 </valueFactory>
             </Spinner>
         </GridPane>
