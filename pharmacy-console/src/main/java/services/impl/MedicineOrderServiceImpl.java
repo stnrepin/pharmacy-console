@@ -26,7 +26,7 @@ public class MedicineOrderServiceImpl {
         return medicineOrderDao.findAll();
     }
 
-    public List<MedicineOrder> findAllMedicineOrdersInPeriod(Instant begin, Instant end) {
+    public List<MedicineOrder> findAllInPeriod(Instant begin, Instant end) {
         return medicineOrderDao.findAllMedicineOrdersInPeriod(begin, end);
     }
 

@@ -1,8 +1,6 @@
 package controllers;
 
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -17,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import models.MedicineOrder;
 import services.impl.MedicineOrderServiceImpl;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -44,6 +43,11 @@ public class MedicineOrderController {
             priceColumn;
     @FXML public JFXTreeTableColumn<MedicineOrderController.MedicineOrderWrapper, String>
             orderDateColumn;
+
+    @FXML
+    public JFXToggleButton filterByDateToggle;
+    public JFXDatePicker dateFromPicker;
+    public JFXDatePicker dateToPicker;
 
     public MedicineOrderController() {
         allMedicineOrders = new ArrayList<>();
@@ -78,6 +82,20 @@ public class MedicineOrderController {
                 event.consume();
             }
         });
+
+        dateFromPicker.setValue(LocalDate.now());
+        dateToPicker.setValue(LocalDate.now());
+    }
+
+    public void filterByDateStateChanged() {
+        if (filterByDateToggle.isSelected()) {
+            var from = dateFromPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant();
+            var to = dateToPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant();;
+            var newOrders = medicineOrderService.findAllInPeriod(from, to);
+            setWrappersWith(newOrders);
+        } else {
+            setWrappersWith(allMedicineOrders);
+        }
     }
 
     public void setMedicineOrderService(MedicineOrderServiceImpl medicineOrderService) {
