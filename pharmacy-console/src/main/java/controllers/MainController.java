@@ -4,9 +4,9 @@ import javafx.fxml.FXML;
 import dao.DiseaseDao;
 import dao.MedicineDao;
 import dao.MedicineOrderDao;
-import services.impl.DiseaseServiceImpl;
-import services.impl.MedicineOrderServiceImpl;
-import services.impl.MedicineServiceImpl;
+import services.DiseaseService;
+import services.MedicineOrderService;
+import services.MedicineService;
 
 public class MainController {
     @FXML MedicineController medicineController;
@@ -17,12 +17,12 @@ public class MainController {
     private final DiseaseDao diseaseDao = new dao.hibernate.DiseaseDao();
     private final MedicineOrderDao medicineOrderDao = new dao.hibernate.MedicineOrderDao();
 
-    private final MedicineServiceImpl medicineService =
-            new MedicineServiceImpl(medicineDao, diseaseDao);
-    private final DiseaseServiceImpl diseaseService =
-            new DiseaseServiceImpl(diseaseDao);
-    private final MedicineOrderServiceImpl medicineOrderService =
-            new MedicineOrderServiceImpl(medicineDao, medicineOrderDao);
+    private final MedicineService medicineService =
+            new services.impl.MedicineService(medicineDao, diseaseDao);
+    private final DiseaseService diseaseService =
+            new services.impl.DiseaseService(diseaseDao);
+    private final MedicineOrderService medicineOrderService =
+            new services.impl.MedicineOrderService(medicineOrderDao);
 
     public void initialize() {
         medicineController.setMedicineService(medicineService);

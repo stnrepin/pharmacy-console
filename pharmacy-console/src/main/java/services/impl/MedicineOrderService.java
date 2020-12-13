@@ -1,43 +1,39 @@
 package services.impl;
 
-import dao.MedicineDao;
 import dao.MedicineOrderDao;
-import models.Medicine;
 import models.MedicineOrder;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class MedicineOrderServiceImpl {
-    private final MedicineDao medicineDao;
+public class MedicineOrderService implements services.MedicineOrderService {
     private final MedicineOrderDao medicineOrderDao;
 
-    public MedicineOrderServiceImpl(MedicineDao medicineDao, MedicineOrderDao medicineOrderDao) {
-        this.medicineDao = medicineDao;
+    public MedicineOrderService(MedicineOrderDao medicineOrderDao) {
         this.medicineOrderDao = medicineOrderDao;
     }
 
+    @Override
     public void orderMedicine(int medId, int count) {
         medicineOrderDao.orderMedicine(medId, count);
     }
 
+    @Override
     public List<MedicineOrder> findAll() {
         return medicineOrderDao.findAll();
     }
 
+    @Override
     public List<MedicineOrder> findAllInPeriod(Instant begin, Instant end) {
         return medicineOrderDao.findAllMedicineOrdersInPeriod(begin, end);
     }
 
-    public int getMedicineOrderCountInPeriod(Instant begin, Instant end) {
-        return medicineOrderDao.getMedicineOrderCountInPeriod(begin, end);
-    }
-
+    @Override
     public int calcTotalCost() {
         return medicineOrderDao.calcTotalCost();
     }
 
+    @Override
     public int calcTotalCostInPeriod(Instant from, Instant to) {
         return medicineOrderDao.calcTotalCost(from, to);
     }

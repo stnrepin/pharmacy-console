@@ -14,7 +14,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import models.MedicineOrder;
-import services.impl.MedicineOrderServiceImpl;
+import services.MedicineOrderService;
 import utils.event.EventListener;
 
 import java.time.LocalDate;
@@ -28,7 +28,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class MedicineOrderController implements EventListener<MedicineOrderCreatedEvent> {
-    private MedicineOrderServiceImpl medicineOrderService;
+    private MedicineOrderService medicineOrderService;
     private List<MedicineOrder> allMedicineOrders;
     private int allOrdersTotalCost;
     private final ObservableList<MedicineOrderController.MedicineOrderWrapper> medicineOrderWrappers;
@@ -107,7 +107,7 @@ public class MedicineOrderController implements EventListener<MedicineOrderCreat
         }
     }
 
-    public void setMedicineOrderService(MedicineOrderServiceImpl medicineOrderService) {
+    public void setMedicineOrderService(MedicineOrderService medicineOrderService) {
         this.medicineOrderService = medicineOrderService;
         loadMedicineOrders();
     }

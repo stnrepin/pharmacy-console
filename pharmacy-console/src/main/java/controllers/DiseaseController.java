@@ -14,7 +14,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import models.Disease;
-import services.impl.DiseaseServiceImpl;
+import services.DiseaseService;
 import utils.event.EventListener;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DiseaseController implements EventListener<MedicinesUpdatedEvent> {
-    private DiseaseServiceImpl diseaseService;
+    private DiseaseService diseaseService;
     private List<Disease> allDiseases;
     private final ObservableList<DiseaseWrapper> diseaseWrappers;
 
@@ -58,7 +58,7 @@ public class DiseaseController implements EventListener<MedicinesUpdatedEvent> {
         });
     }
 
-    public void setDiseaseService(DiseaseServiceImpl diseaseService) {
+    public void setDiseaseService(DiseaseService diseaseService) {
         this.diseaseService = diseaseService;
         loadDiseases();
     }

@@ -1,17 +1,16 @@
 package controllers;
 
 import com.jfoenix.controls.JFXTextField;
-import dao.MedicineDao;
 import javafx.fxml.FXML;
 import javafx.scene.control.SpinnerValueFactory;
 import models.Medicine;
-import services.impl.DiseaseServiceImpl;
+import services.DiseaseService;
 
 import java.util.ArrayList;
 
 public class AddMedicineController extends ModalControllerBase {
     private Medicine medicine;
-    private DiseaseServiceImpl diseaseService;
+    private DiseaseService diseaseService;
 
     @FXML public JFXTextField nameField;
     @FXML public SpinnerValueFactory.IntegerSpinnerValueFactory priceSpinnerValueFactory;
@@ -61,7 +60,7 @@ public class AddMedicineController extends ModalControllerBase {
         return medicine;
     }
 
-    public void setDiseaseService(DiseaseServiceImpl diseaseService) {
+    public void setDiseaseService(DiseaseService diseaseService) {
         this.diseaseService = diseaseService;
     }
 }

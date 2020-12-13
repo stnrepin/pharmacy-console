@@ -15,9 +15,9 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;
 import models.Medicine;
-import services.impl.DiseaseServiceImpl;
-import services.impl.MedicineOrderServiceImpl;
-import services.impl.MedicineServiceImpl;
+import services.DiseaseService;
+import services.MedicineOrderService;
+import services.MedicineService;
 import utils.ViewManager;
 import utils.event.EventSource;
 
@@ -27,9 +27,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MedicineController {
-    private MedicineServiceImpl medicineService;
-    private DiseaseServiceImpl diseaseService;
-    private MedicineOrderServiceImpl medicineOrderService;
+    private MedicineService medicineService;
+    private DiseaseService diseaseService;
+    private MedicineOrderService medicineOrderService;
     private List<Medicine> allMedicines;
     private final ObservableList<MedicineWrapper> medicineWrappers;
     private final EventSource<MedicinesUpdatedEvent> medicinesUpdatedEventSource;
@@ -162,16 +162,16 @@ public class MedicineController {
         }
     }
 
-    public void setMedicineService(MedicineServiceImpl medicineService) {
+    public void setMedicineService(MedicineService medicineService) {
         this.medicineService = medicineService;
         loadMedicines();
     }
 
-    public void setDiseaseService(DiseaseServiceImpl diseaseService) {
+    public void setDiseaseService(DiseaseService diseaseService) {
         this.diseaseService = diseaseService;
     }
 
-    public void setMedicineOrderService(MedicineOrderServiceImpl medicineOrderService) {
+    public void setMedicineOrderService(MedicineOrderService medicineOrderService) {
         this.medicineOrderService = medicineOrderService;
     }
 
