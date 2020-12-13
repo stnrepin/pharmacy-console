@@ -15,7 +15,10 @@ public class MedicineOrderDao extends DaoCrudOperations<Integer, MedicineOrder>
     public List<MedicineOrder> findAll() {
         return PersistenceEntityManagerUtils.doTransaction(em -> {
             var query =
-                    em.createQuery("from models.MedicineOrder", MedicineOrder.class);
+                    em.createQuery("""
+                        from models.MedicineOrder
+                        order by orderDate desc
+                        """, MedicineOrder.class);
             return query.getResultList();
         });
     }

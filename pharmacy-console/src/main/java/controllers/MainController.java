@@ -1,9 +1,9 @@
 package controllers;
 
+import javafx.fxml.FXML;
 import dao.DiseaseDao;
 import dao.MedicineDao;
 import dao.MedicineOrderDao;
-import javafx.fxml.FXML;
 import services.impl.DiseaseServiceImpl;
 import services.impl.MedicineOrderServiceImpl;
 import services.impl.MedicineServiceImpl;
@@ -25,11 +25,12 @@ public class MainController {
             new MedicineOrderServiceImpl(medicineDao, medicineOrderDao);
 
     public void initialize() {
-        // TODO: inject
         medicineController.setMedicineService(medicineService);
         medicineController.setDiseaseService(diseaseService);
         medicineController.setMedicineOrderService(medicineOrderService);
 
         diseasesController.setDiseaseService(diseaseService);
+
+        medicineOrderController.setMedicineOrderService(medicineOrderService);
     }
 }

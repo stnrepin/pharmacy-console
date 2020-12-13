@@ -94,7 +94,7 @@ public class DiseaseController {
             update();
         }
 
-        public Disease getWrappedMedicine() { return wrapped; }
+        public Disease getWrappedDisease() { return wrapped; }
         public IntegerProperty getIdProperty() { return id; }
         public StringProperty getNameProperty() { return name; }
     }

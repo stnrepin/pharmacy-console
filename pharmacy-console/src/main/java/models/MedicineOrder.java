@@ -35,6 +35,14 @@ public class MedicineOrder {
         this.orderDate = Instant.now();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Medicine getItem() {
         return this.item;
     }

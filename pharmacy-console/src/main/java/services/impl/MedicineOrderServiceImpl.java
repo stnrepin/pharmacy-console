@@ -22,7 +22,7 @@ public class MedicineOrderServiceImpl {
         medicineOrderDao.orderMedicine(medId, count);
     }
 
-    public List<MedicineOrder> getAllOrders() {
+    public List<MedicineOrder> findAll() {
         return medicineOrderDao.findAll();
     }
 
