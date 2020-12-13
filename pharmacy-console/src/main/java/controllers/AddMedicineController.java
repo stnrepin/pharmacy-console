@@ -54,6 +54,7 @@ public class AddMedicineController extends ModalControllerBase {
 
         medicine.setTargetDiseases(new ArrayList<>());
         for (var diseaseName : diseasesField.getText().trim().split(";++")) {
+            diseaseName = diseaseName.trim();
             medicine.addTargetDisease(diseaseService.findByNameOrCreate(diseaseName));
         }
 
