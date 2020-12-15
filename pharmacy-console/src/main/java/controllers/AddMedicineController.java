@@ -28,9 +28,7 @@ public class AddMedicineController extends ModalControllerBase {
     public void initialize() {
         nameField.setText(medicine.getName());
         priceSpinnerValueFactory.setValue(medicine.getPrice());
-        priceSpinnerValueFactory.setMax(Integer.MAX_VALUE);
         quantitySpinnerValueFactory.setValue(medicine.getCount());
-        quantitySpinnerValueFactory.setMax(Integer.MAX_VALUE);
 
         var ds = medicine.getTargetDiseases();
         var sb = new StringBuilder();
