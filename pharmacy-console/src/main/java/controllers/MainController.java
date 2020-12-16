@@ -4,11 +4,15 @@ import javafx.fxml.FXML;
 import dao.DiseaseDao;
 import dao.MedicineDao;
 import dao.MedicineOrderDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import services.DiseaseService;
 import services.MedicineOrderService;
 import services.MedicineService;
 
 public class MainController {
+    private static final Logger logger = LogManager.getLogger(MainController.class);
+
     @FXML MedicineController medicineController;
     @FXML DiseaseController diseasesController;
     @FXML MedicineOrderController medicineOrderController;
@@ -35,5 +39,7 @@ public class MainController {
 
         medicineController.getMedicinesUpdatedEventSource().addListener(diseasesController);
         medicineController.getOrderCreatedEventSource().addListener(medicineOrderController);
+
+        logger.info("Initialized");
     }
 }

@@ -12,10 +12,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class ViewManager {
+    private static final Logger logger = LogManager.getLogger(ViewManager.class);
+
     private static final String mainCustomStyle =
             ViewManager.class.getResource("/styles/style.css").toExternalForm();
 
@@ -46,6 +50,7 @@ public class ViewManager {
     }
 
     private static <T> void showView(String url, T ctl, WindowOpeningStrategy openingStrategy) {
+        logger.debug("Showing " + url);
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(ViewManager.class.getResource(url));
 
@@ -57,8 +62,7 @@ public class ViewManager {
         try {
             win = fxmlLoader.load();
         } catch (IOException e) {
-            System.out.println("showView [Error] "  + e.getMessage());
-            e.printStackTrace();
+            logger.error("FXML loading error", e);
             showException(e);
             return;
         }
@@ -77,6 +81,7 @@ public class ViewManager {
             ((WindowContainingControllerBase)ctl).setWindow(openingStrategy.getStage());
         }
 
+        logger.info("Show view " + url);
         openingStrategy.open(win, scene);
     }
 }

@@ -14,6 +14,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import models.MedicineOrder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import services.MedicineOrderService;
 import utils.event.EventListener;
 
@@ -28,6 +30,8 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class MedicineOrderController implements EventListener<MedicineOrderCreatedEvent> {
+    private static final Logger logger = LogManager.getLogger(MedicineOrderController.class);
+
     private MedicineOrderService medicineOrderService;
     private List<MedicineOrder> allMedicineOrders;
     private int allOrdersTotalCost;
@@ -91,12 +95,14 @@ public class MedicineOrderController implements EventListener<MedicineOrderCreat
 
         dateFromPicker.setValue(LocalDate.now());
         dateToPicker.setValue(LocalDate.now());
+
+        logger.info("Initialized");
     }
 
     public void filterByDateStateChanged() {
         if (filterByDateToggle.isSelected()) {
             var from = dateFromPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant();
-            var to = dateToPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant();;
+            var to = dateToPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant();
             var newOrders = medicineOrderService.findAllInPeriod(from, to);
             var totalCost = medicineOrderService.calcTotalCostInPeriod(from, to);
             setOrdersTotalCost(totalCost);
@@ -110,6 +116,7 @@ public class MedicineOrderController implements EventListener<MedicineOrderCreat
     public void setMedicineOrderService(MedicineOrderService medicineOrderService) {
         this.medicineOrderService = medicineOrderService;
         loadMedicineOrders();
+        logger.info("Medicine orders loaded");
     }
 
     public int getOrdersTotalCost() {

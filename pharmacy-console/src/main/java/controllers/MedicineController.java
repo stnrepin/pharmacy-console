@@ -15,6 +15,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;
 import models.Medicine;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import services.DiseaseService;
 import services.MedicineOrderService;
 import services.MedicineService;
@@ -27,6 +29,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MedicineController {
+    private static final Logger logger = LogManager.getLogger(MedicineController.class);
+
     private MedicineService medicineService;
     private DiseaseService diseaseService;
     private MedicineOrderService medicineOrderService;
@@ -76,6 +80,8 @@ public class MedicineController {
                 event.consume();
             }
         });
+
+        logger.info("Initialized");
     }
 
     public void addMedicineAction(ActionEvent event) {
@@ -92,6 +98,8 @@ public class MedicineController {
         allMedicines.add(m);
         medicineWrappers.add(new MedicineWrapper(m));
         medicinesUpdatedEventSource.notifyAll(new MedicinesUpdatedEvent());
+
+        logger.debug("Medicine '" + m.getName() + "' added");
     }
 
     public void removeMedicineAction() {
@@ -103,11 +111,14 @@ public class MedicineController {
             var medicine =
                     medicineService.findById(medicineWrappers.get(s).getIdProperty().getValue());
             if (medicine == null) {
+                logger.debug("Can't fine medicine");
                 continue;
             }
             medicineService.remove(medicine);
             allMedicines.removeIf(x -> x.getId() == medicine.getId());
             medicineWrappers.removeIf(x -> x.getIdProperty().getValue() == medicine.getId());
+
+            logger.debug("Medicine '" + medicine.getName() + "' removed");
         }
     }
 
@@ -130,6 +141,8 @@ public class MedicineController {
         medicineService.update(m);
         mWrapped.setWrappedMedicine(m);
         medicinesUpdatedEventSource.notifyAll(new MedicinesUpdatedEvent());
+
+        logger.debug("Medicine '" + m.getName() + "' edited");
     }
 
     public void createOrderAction(ActionEvent event) {
@@ -150,6 +163,8 @@ public class MedicineController {
         medicineOrderService.orderMedicine(m.getId(), quantity);
         mWrapped.update();
         orderCreatedEventSource.notifyAll(new MedicineOrderCreatedEvent());
+
+        logger.debug("Order for '" + m.getName() + "' created");
     }
 
     public void filterByDiseaseStateChanged() {
@@ -165,6 +180,7 @@ public class MedicineController {
     public void setMedicineService(MedicineService medicineService) {
         this.medicineService = medicineService;
         loadMedicines();
+        logger.info("Medicines loaded");
     }
 
     public void setDiseaseService(DiseaseService diseaseService) {

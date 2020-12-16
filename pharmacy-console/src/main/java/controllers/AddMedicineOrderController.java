@@ -5,8 +5,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import models.Medicine;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class AddMedicineOrderController extends ModalControllerBase {
+    private static final Logger logger = LogManager.getLogger(AddMedicineOrderController.class);
+
     private final Medicine medicine;
 
     @FXML public Label nameLabel;
@@ -25,6 +29,8 @@ public class AddMedicineOrderController extends ModalControllerBase {
         nameLabel.setText(medicine.getName());
         priceLabel.setText(String.valueOf(medicine.getPrice()));
         quantityLabel.setText(String.valueOf(medicine.getCount()));
+
+        logger.info("Initialized");
     }
 
     public int getQuantityToOrder() {

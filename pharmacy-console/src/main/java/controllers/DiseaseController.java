@@ -14,6 +14,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import models.Disease;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import services.DiseaseService;
 import utils.event.EventListener;
 
@@ -23,6 +25,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DiseaseController implements EventListener<MedicinesUpdatedEvent> {
+    private static final Logger logger = LogManager.getLogger(DiseaseController.class);
+
     private DiseaseService diseaseService;
     private List<Disease> allDiseases;
     private final ObservableList<DiseaseWrapper> diseaseWrappers;
@@ -56,6 +60,8 @@ public class DiseaseController implements EventListener<MedicinesUpdatedEvent> {
                 event.consume();
             }
         });
+
+        logger.info("Initialized");
     }
 
     public void removeAction() {
@@ -67,20 +73,24 @@ public class DiseaseController implements EventListener<MedicinesUpdatedEvent> {
             var disease =
                     diseaseService.findById(diseaseWrappers.get(s).getIdProperty().getValue());
             if (disease == null) {
+                logger.debug("Can't find disease '" + disease.getName() + "'");
                 continue;
             }
             if (disease.getTargetMedicines().size() != 0) {
-                return;
+                logger.debug("Disease'" + disease.getName() + "': has links");
+                continue;
             }
             diseaseService.remove(disease);
             allDiseases.removeIf(x -> x.getId() == disease.getId());
             diseaseWrappers.removeIf(x -> x.getIdProperty().getValue() == disease.getId());
+            logger.debug("Removed '" + disease.getName() + "'");
         }
     }
 
     public void setDiseaseService(DiseaseService diseaseService) {
         this.diseaseService = diseaseService;
         loadDiseases();
+        logger.info("Diseases loaded");
     }
 
     private void loadDiseases() {

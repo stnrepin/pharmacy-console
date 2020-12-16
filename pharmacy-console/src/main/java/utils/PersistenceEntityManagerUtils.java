@@ -1,11 +1,13 @@
 package utils;
 
-import org.postgresql.util.PSQLException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
 public class PersistenceEntityManagerUtils {
+    private static final Logger logger = LogManager.getLogger(PersistenceEntityManagerUtils.class);
     private static EntityManager entityManager;
 
     private PersistenceEntityManagerUtils() {}
@@ -24,8 +26,7 @@ public class PersistenceEntityManagerUtils {
             getEntityManager();
             return true;
         } catch (Exception e) {
-            System.out.println("tryInitializeEntityManager() [Error] " + e.toString());
-            e.printStackTrace();
+            logger.error(e);
             return false;
         }
     }
@@ -42,6 +43,7 @@ public class PersistenceEntityManagerUtils {
             em.getTransaction().commit();
             return res;
         } catch (Exception ex) {
+            logger.error("Transaction failed", ex);
             em.getTransaction().rollback();
             throw ex;
         }

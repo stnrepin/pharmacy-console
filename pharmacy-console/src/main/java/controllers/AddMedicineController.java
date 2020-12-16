@@ -4,12 +4,16 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.SpinnerValueFactory;
 import models.Medicine;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import services.DiseaseService;
 
 import java.util.ArrayList;
 
 public class AddMedicineController extends ModalControllerBase {
-    private Medicine medicine;
+    private static final Logger logger = LogManager.getLogger(AddMedicineController.class);
+
+    private final Medicine medicine;
     private DiseaseService diseaseService;
 
     @FXML public JFXTextField nameField;
@@ -39,12 +43,11 @@ public class AddMedicineController extends ModalControllerBase {
             sb.append(ds.get(i).getName());
         }
         diseasesField.setText(sb.toString());
+
+        logger.info("Initialized");
     }
 
     public Medicine getResultMedicine() {
-        // TODO: validate hasResult
-        // TODO: validate fields
-
         medicine.setName(nameField.getText());
         medicine.setPrice(priceSpinnerValueFactory.getValue());
         medicine.setCount(quantitySpinnerValueFactory.getValue());
