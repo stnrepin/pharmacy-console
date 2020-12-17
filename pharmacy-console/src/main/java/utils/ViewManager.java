@@ -45,6 +45,22 @@ public class ViewManager {
         alert.showAndWait();
     }
 
+    public static void showInfoDialog(String message, Window parent) {
+        var dialog = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
+        dialog.initStyle(StageStyle.UNDECORATED);
+        dialog.initOwner(parent);
+        dialog.showAndWait();
+    }
+
+    public static boolean showConfirmationDialog(String message, Window parent) {
+        var dialog = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.OK, ButtonType.CANCEL);
+        dialog.initStyle(StageStyle.UNDECORATED);
+        dialog.initOwner(parent);
+        var res = dialog.showAndWait();
+        return res.map(x -> x == ButtonType.OK)
+                  .orElse(false);
+    }
+
     private static <T> void showView(String url, WindowOpeningStrategy openingStrategy) {
         showView(url, null, openingStrategy);
     }

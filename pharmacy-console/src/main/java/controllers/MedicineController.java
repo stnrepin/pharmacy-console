@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MedicineController {
+public class MedicineController extends WindowContainingControllerBase {
     private static final Logger logger = LogManager.getLogger(MedicineController.class);
 
     private MedicineService medicineService;
@@ -102,7 +102,7 @@ public class MedicineController {
         logger.debug("Medicine '" + m.getName() + "' added");
     }
 
-    public void removeMedicineAction() {
+    public void removeMedicineAction(ActionEvent event) {
         if (medicineTable.getSelectionModel().isEmpty()) {
             return;
         }
@@ -112,6 +112,13 @@ public class MedicineController {
                     medicineService.findById(medicineWrappers.get(s).getIdProperty().getValue());
             if (medicine == null) {
                 logger.debug("Can't fine medicine");
+                continue;
+            }
+            var res = ViewManager.showConfirmationDialog(
+                    "Are you sure you want to delete medicine '" + medicine.getName() + "'?",
+                    getWindowFromEvent(event));
+            if (!res) {
+                logger.debug("User canceled deleting");
                 continue;
             }
             medicineService.remove(medicine);
@@ -220,10 +227,6 @@ public class MedicineController {
             return null;
         }
         return selectedList.get(0);
-    }
-
-    private Window getWindowFromEvent(ActionEvent event) {
-        return ((Node)event.getSource()).getScene().getWindow();
     }
 
     private static class MedicineWrapper extends RecursiveTreeObject<MedicineWrapper> {

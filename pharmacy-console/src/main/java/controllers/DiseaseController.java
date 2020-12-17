@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
@@ -17,6 +18,7 @@ import models.Disease;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import services.DiseaseService;
+import utils.ViewManager;
 import utils.event.EventListener;
 
 import java.util.ArrayList;
@@ -24,7 +26,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DiseaseController implements EventListener<MedicinesUpdatedEvent> {
+public class DiseaseController extends WindowContainingControllerBase
+                               implements EventListener<MedicinesUpdatedEvent> {
     private static final Logger logger = LogManager.getLogger(DiseaseController.class);
 
     private DiseaseService diseaseService;
@@ -36,7 +39,7 @@ public class DiseaseController implements EventListener<MedicinesUpdatedEvent> {
     @FXML public JFXTreeTableColumn<DiseaseController.DiseaseWrapper, Integer> diseaseIdColumn;
     @FXML public JFXTreeTableColumn<DiseaseController.DiseaseWrapper, String>  diseaseNameColumn;
 
-    public DiseaseController() {
+    public DiseaseController(){
         allDiseases = new ArrayList<>();
         diseaseWrappers = FXCollections.observableArrayList();
     }
@@ -64,20 +67,30 @@ public class DiseaseController implements EventListener<MedicinesUpdatedEvent> {
         logger.info("Initialized");
     }
 
-    public void removeAction() {
+    public void removeAction(ActionEvent event) {
         if (diseaseTable.getSelectionModel().isEmpty()) {
             return;
         }
         var selected = diseaseTable.getSelectionModel().getSelectedIndices();
         for (var s : selected) {
-            var disease =
-                    diseaseService.findById(diseaseWrappers.get(s).getIdProperty().getValue());
+            var id = diseaseWrappers.get(s).getIdProperty().getValue();
+            var disease = diseaseService.findById(id);
             if (disease == null) {
-                logger.debug("Can't find disease '" + disease.getName() + "'");
+                logger.debug("Can't find disease '" + id + "'");
                 continue;
             }
             if (disease.getTargetMedicines().size() != 0) {
-                logger.debug("Disease'" + disease.getName() + "': has links");
+                ViewManager.showInfoDialog(
+                        "Disease '" + disease.getName() + "' has links with medicines",
+                        getWindowFromEvent(event));
+                logger.debug("Disease '" + disease.getName() + "': has links");
+                continue;
+            }
+            var res = ViewManager.showConfirmationDialog(
+                    "Are you sure you want to delete disease '" + disease.getName() + "'?",
+                    getWindowFromEvent(event));
+            if (!res) {
+                logger.debug("User canceled deleting");
                 continue;
             }
             diseaseService.remove(disease);
