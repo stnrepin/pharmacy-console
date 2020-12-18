@@ -52,9 +52,12 @@ public class AddMedicineController extends ModalControllerBase {
         medicine.setPrice(priceSpinnerValueFactory.getValue());
         medicine.setCount(quantitySpinnerValueFactory.getValue());
 
-        medicine.setTargetDiseases(new ArrayList<>());
+        medicine.getTargetDiseases().clear();
         for (var diseaseName : diseasesField.getText().trim().split(";++")) {
             diseaseName = diseaseName.trim();
+            if (diseaseName.isEmpty()) {
+                continue;
+            }
             medicine.addTargetDisease(diseaseService.findByNameOrCreate(diseaseName));
         }
 

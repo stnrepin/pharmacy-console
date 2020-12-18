@@ -9,11 +9,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Window;
 import models.Medicine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -117,6 +115,7 @@ public class MedicineController extends WindowContainingControllerBase {
             var res = ViewManager.showConfirmationDialog(
                     "Are you sure you want to delete medicine '" + medicine.getName() + "'?",
                     getWindowFromEvent(event));
+            rootPane.requestFocus();
             if (!res) {
                 logger.debug("User canceled deleting");
                 continue;
@@ -124,6 +123,7 @@ public class MedicineController extends WindowContainingControllerBase {
             medicineService.remove(medicine);
             allMedicines.removeIf(x -> x.getId() == medicine.getId());
             medicineWrappers.removeIf(x -> x.getIdProperty().getValue() == medicine.getId());
+            medicinesUpdatedEventSource.notifyAll(new MedicinesUpdatedEvent());
 
             logger.debug("Medicine '" + medicine.getName() + "' removed");
         }
