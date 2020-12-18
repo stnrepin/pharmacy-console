@@ -46,7 +46,7 @@ public class MedicineService implements services.MedicineService {
 
     @Override
     public Medicine findById(int id) {
-        logger.debug("Add #" + id);
+        logger.debug("Find #" + id);
         return medicineDao.read(id);
     }
 

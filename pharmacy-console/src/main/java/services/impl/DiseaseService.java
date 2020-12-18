@@ -17,6 +17,18 @@ public class DiseaseService implements services.DiseaseService {
     }
 
     @Override
+    public void add(Disease d) {
+        logger.debug("Add '" + d.getName() + "'");
+        diseaseDao.create(d);
+    }
+
+    @Override
+    public void update(Disease d) {
+        logger.debug("Update '" + d.getName() + "'");
+        diseaseDao.update(d);
+    }
+
+    @Override
     public void remove(Disease d) {
         logger.debug("Remove disease '" + d.getName() + "'");
         diseaseDao.delete(d);
@@ -42,6 +54,8 @@ public class DiseaseService implements services.DiseaseService {
             return d;
         }
         logger.debug("Disease '" + name + "' created");
-        return new Disease(name);
+        d = new Disease(name);
+        diseaseDao.create(d);
+        return d;
     }
 }

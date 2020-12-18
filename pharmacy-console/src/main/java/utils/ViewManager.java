@@ -1,5 +1,6 @@
 package utils;
 
+import controllers.AddDiseaseController;
 import controllers.AddMedicineController;
 import controllers.AddMedicineOrderController;
 import controllers.WindowContainingControllerBase;
@@ -29,6 +30,10 @@ public class ViewManager {
 
     public static void showAddMedicineView(Window parent, AddMedicineController c) {
         showView("/views/AddMedicineView.fxml", c, new ModalWindowOpeningStrategy(parent));
+    }
+
+    public static AddDiseaseController showAddDiseaseView(Window parent, AddDiseaseController c) {
+        return showView("/views/AddDiseaseView.fxml", c, new ModalWindowOpeningStrategy(parent));
     }
 
     public static void showAddOrderView(Window parent, AddMedicineOrderController c) {
@@ -65,7 +70,7 @@ public class ViewManager {
         showView(url, null, openingStrategy);
     }
 
-    private static <T> void showView(String url, T ctl, WindowOpeningStrategy openingStrategy) {
+    private static <T> T showView(String url, T ctl, WindowOpeningStrategy openingStrategy) {
         logger.debug("Showing " + url);
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(ViewManager.class.getResource(url));
@@ -80,12 +85,11 @@ public class ViewManager {
         } catch (IOException e) {
             logger.error("FXML loading error", e);
             showException(e);
-            return;
+            return null;
         }
 
         Scene scene = new Scene(win);
         scene.getStylesheets().add(mainCustomStyle);
-
 
         // Check if ctl extends WindowContainingControllerBase
         //
@@ -99,6 +103,7 @@ public class ViewManager {
 
         logger.info("Show view " + url);
         openingStrategy.open(win, scene);
+        return ctl;
     }
 }
 

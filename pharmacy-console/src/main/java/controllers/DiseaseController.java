@@ -67,6 +67,21 @@ public class DiseaseController extends WindowContainingControllerBase
         logger.info("Initialized");
     }
 
+    public void addAction(ActionEvent event) {
+        var ctl = ViewManager.showAddDiseaseView(getWindowFromEvent(event),
+                                        new AddDiseaseController());
+        rootPane.requestFocus();
+        if (!ctl.hasResult()) {
+            return;
+        }
+        var d = ctl.getResult();
+        diseaseService.add(d);
+        allDiseases.add(d);
+        diseaseWrappers.add(new DiseaseController.DiseaseWrapper(d));
+
+        logger.debug("Disease '" + d.getName() + "' added");
+    }
+
     public void removeAction(ActionEvent event) {
         if (diseaseTable.getSelectionModel().isEmpty()) {
             return;
@@ -83,12 +98,14 @@ public class DiseaseController extends WindowContainingControllerBase
                 ViewManager.showInfoDialog(
                         "Disease '" + disease.getName() + "' has links with medicines",
                         getWindowFromEvent(event));
+                rootPane.requestFocus();
                 logger.debug("Disease '" + disease.getName() + "': has links");
                 continue;
             }
             var res = ViewManager.showConfirmationDialog(
                     "Are you sure you want to delete disease '" + disease.getName() + "'?",
                     getWindowFromEvent(event));
+            rootPane.requestFocus();
             if (!res) {
                 logger.debug("User canceled deleting");
                 continue;
@@ -98,6 +115,26 @@ public class DiseaseController extends WindowContainingControllerBase
             diseaseWrappers.removeIf(x -> x.getIdProperty().getValue() == disease.getId());
             logger.debug("Removed '" + disease.getName() + "'");
         }
+    }
+
+    public void editAction(ActionEvent event) {
+        var selected = getSelectedIndexOrNull();
+        if (selected == null) {
+            return;
+        }
+
+        var dWrapped = diseaseWrappers.get(selected);
+        var ctl = new AddDiseaseController(dWrapped.getWrappedDisease());
+        ViewManager.showAddDiseaseView(getWindowFromEvent(event), ctl);
+        rootPane.requestFocus();
+        if (!ctl.hasResult()) {
+            return;
+        }
+        var d = ctl.getResult();
+        diseaseService.update(d);
+        dWrapped.setWrappedDisease(d);
+
+        logger.debug("Disease '" + d.getName() + "' added");
     }
 
     public void setDiseaseService(DiseaseService diseaseService) {
@@ -120,6 +157,17 @@ public class DiseaseController extends WindowContainingControllerBase
 
     public void handle(MedicinesUpdatedEvent event) {
         loadDiseases();
+    }
+
+    private Integer getSelectedIndexOrNull() {
+        if (diseaseTable.getSelectionModel().isEmpty()) {
+            return null;
+        }
+        var selectedList = diseaseTable.getSelectionModel().getSelectedIndices();
+        if (selectedList.size() != 1) {
+            return null;
+        }
+        return selectedList.get(0);
     }
 
     private static class DiseaseWrapper extends RecursiveTreeObject<DiseaseController.DiseaseWrapper> {
