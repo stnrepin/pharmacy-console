@@ -8,6 +8,8 @@
 <?import javafx.geometry.Insets?>
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:id="rootPane"
@@ -17,6 +19,11 @@
           AnchorPane.leftAnchor="10" AnchorPane.topAnchor="20"
           AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="20">
         <HBox alignment="CENTER_LEFT" spacing="20">
+            <JFXButton styleClass="phcy-action-button" onAction="#createReport">
+                <graphic>
+                    <MaterialIconView glyphName="PRINT" glyphSize="60" />
+                </graphic>
+            </JFXButton>
             <VBox spacing="10" styleClass="phcy-panel" minWidth="300">
                 <padding>
                     <Insets left="10" top="10" right="10" bottom="10" />

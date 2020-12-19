@@ -3,12 +3,14 @@ package controllers;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import controllers.events.MedicineOrderCreatedEvent;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.ScrollEvent;
@@ -17,19 +19,22 @@ import models.MedicineOrder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import services.MedicineOrderService;
+import utils.DateUtils;
+import utils.ViewManager;
 import utils.event.EventListener;
 
+import java.io.File;
+import java.net.URI;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class MedicineOrderController implements EventListener<MedicineOrderCreatedEvent> {
+public class MedicineOrderController extends WindowContainingControllerBase
+                                     implements EventListener<MedicineOrderCreatedEvent> {
     private static final Logger logger = LogManager.getLogger(MedicineOrderController.class);
 
     private MedicineOrderService medicineOrderService;
@@ -99,10 +104,52 @@ public class MedicineOrderController implements EventListener<MedicineOrderCreat
         logger.info("Initialized");
     }
 
+    public void createReport(ActionEvent event) {
+        var win = getWindowFromEvent(event);
+        var out_file = ViewManager.showSaveDialog(win,"PDF files (*.pdf)", "*.pdf");
+        if (out_file == null) {
+            return;
+        }
+
+        var spinnerController = ViewManager.showSpinner(win);
+
+        var isFiltered = filterByDateToggle.isSelected();
+        var from = isFiltered ? DateUtils.toInstant(dateFromPicker.getValue())
+                                     : Instant.ofEpochMilli(0);
+        var to = isFiltered ? DateUtils.toInstant(dateToPicker.getValue())
+                                   : Instant.now();
+
+        URI templateUri;
+        try {
+            templateUri = MedicineOrderController.class.getResource(
+                    "/Report_MedicineOrder.jrxml").toURI();
+        } catch (Exception e) {
+            logger.error("Template uri construction error", e);
+            ViewManager.showException(e);
+            return;
+        }
+
+        var thread = new Thread(() ->
+                medicineOrderService.printReportToFile(
+                    out_file.getAbsolutePath(), templateUri, from, to,
+                    (e) -> {
+                        Platform.runLater(() ->{
+                            spinnerController.close();
+                            rootPane.requestFocus();
+                            if (e != null) {
+                                ViewManager.showException(e);
+                            }
+                        });
+                    }
+                )
+        );
+        thread.start();
+    }
+
     public void filterByDateStateChanged() {
         if (filterByDateToggle.isSelected()) {
-            var from = dateFromPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant();
-            var to = dateToPicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant();
+            var from = DateUtils.toInstant(dateFromPicker.getValue());
+            var to = DateUtils.toInstant(dateToPicker.getValue());
             var newOrders = medicineOrderService.findAllInPeriod(from, to);
             var totalCost = medicineOrderService.calcTotalCostInPeriod(from, to);
             setOrdersTotalCost(totalCost);

@@ -1,21 +1,17 @@
 package utils;
 
-import controllers.AddDiseaseController;
-import controllers.AddMedicineController;
-import controllers.AddMedicineOrderController;
-import controllers.WindowContainingControllerBase;
+import controllers.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
+import javafx.scene.paint.Color;
+import javafx.stage.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 
 public class ViewManager {
@@ -38,6 +34,12 @@ public class ViewManager {
 
     public static void showAddOrderView(Window parent, AddMedicineOrderController c) {
         showView("/views/AddMedicineOrderView.fxml", c, new ModalWindowOpeningStrategy(parent));
+    }
+
+    public static SpinnerController showSpinner(Window parent) {
+        return showView("/views/SpinnerView.fxml",
+                new SpinnerController(),
+                new TopTransparentModalWindowOpeningStrategy(parent));
     }
 
     public static void showException(Exception e) {
@@ -66,8 +68,15 @@ public class ViewManager {
                   .orElse(false);
     }
 
-    private static <T> void showView(String url, WindowOpeningStrategy openingStrategy) {
-        showView(url, null, openingStrategy);
+    public static File showSaveDialog(Window parent, String ext_long, String ext) {
+        var fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(ext_long, ext);
+        fileChooser.getExtensionFilters().add(extFilter);
+        return fileChooser.showSaveDialog(parent);
+    }
+
+    private static <T> T showView(String url, WindowOpeningStrategy openingStrategy) {
+        return showView(url, null, openingStrategy);
     }
 
     private static <T> T showView(String url, T ctl, WindowOpeningStrategy openingStrategy) {
@@ -132,7 +141,7 @@ class MainWindowOpeningStrategy implements WindowOpeningStrategy {
 }
 
 class ModalWindowOpeningStrategy implements WindowOpeningStrategy {
-    private final Stage stage = new Stage();
+    protected final Stage stage = new Stage();
 
     public ModalWindowOpeningStrategy(Window parent) {
         stage.initStyle(StageStyle.UNDECORATED);
@@ -149,5 +158,19 @@ class ModalWindowOpeningStrategy implements WindowOpeningStrategy {
     public void open(Parent win, Scene scene) {
         stage.setScene(scene);
         stage.showAndWait();
+    }
+}
+
+class TopTransparentModalWindowOpeningStrategy extends ModalWindowOpeningStrategy {
+
+    public TopTransparentModalWindowOpeningStrategy(Window parent) {
+        super(parent);
+    }
+
+    @Override
+    public void open(Parent win, Scene scene) {
+        scene.setFill(Color.TRANSPARENT);
+        stage.setScene(scene);
+        stage.show();
     }
 }
