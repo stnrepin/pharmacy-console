@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import controllers.events.MedicineOrderCreatedEvent;
 import controllers.events.MedicinesUpdatedEvent;
+import controllers.exceptions.IncorrectNameException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -83,15 +84,23 @@ public class MedicineController extends WindowContainingControllerBase {
     }
 
     public void addMedicineAction(ActionEvent event) {
+        var win = getWindowFromEvent(event);
         var addMedController = new AddMedicineController();
         addMedController.setDiseaseService(diseaseService);
 
-        ViewManager.showAddMedicineView(getWindowFromEvent(event), addMedController);
+        ViewManager.showAddMedicineView(win, addMedController);
         rootPane.requestFocus();
         if (!addMedController.hasResult()) {
             return;
         }
-        Medicine m = addMedController.getResultMedicine();
+        Medicine m;
+        try {
+            m = addMedController.getResultMedicine();
+        } catch (IncorrectNameException e) {
+            ViewManager.showError(e.getPrintableMessage(), win);
+            logger.error(e);
+            return;
+        }
         medicineService.add(m);
         allMedicines.add(m);
         medicineWrappers.add(new MedicineWrapper(m));
@@ -135,16 +144,25 @@ public class MedicineController extends WindowContainingControllerBase {
             return;
         }
 
+        var win = getWindowFromEvent(event);
+
         var mWrapped = medicineWrappers.get(selected);
         var addMedController = new AddMedicineController(mWrapped.getWrappedMedicine());
         addMedController.setDiseaseService(diseaseService);
 
-        ViewManager.showAddMedicineView(getWindowFromEvent(event), addMedController);
+        ViewManager.showAddMedicineView(win, addMedController);
         rootPane.requestFocus();
         if (!addMedController.hasResult()) {
             return;
         }
-        var m = addMedController.getResultMedicine();
+        Medicine m;
+        try {
+            m = addMedController.getResultMedicine();
+        } catch (IncorrectNameException e) {
+            ViewManager.showError(e.getPrintableMessage(), win);
+            logger.error(e);
+            return;
+        }
         medicineService.update(m);
         mWrapped.setWrappedMedicine(m);
         medicinesUpdatedEventSource.notifyAll(new MedicinesUpdatedEvent());

@@ -1,6 +1,7 @@
 package controllers;
 
 import com.jfoenix.controls.JFXTextField;
+import controllers.exceptions.IncorrectNameException;
 import javafx.fxml.FXML;
 import models.Disease;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +29,11 @@ public class AddDiseaseController extends ModalControllerBase {
         logger.info("Initialized");
     }
 
-    public Disease getResult() {
+    public Disease getResult() throws IncorrectNameException {
+        var name = nameField.getText();
+        if (name.isEmpty() || name.contains(";")) {
+            throw new IncorrectNameException("disease");
+        }
         disease.setName(nameField.getText());
         return disease;
     }

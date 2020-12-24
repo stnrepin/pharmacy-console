@@ -43,12 +43,17 @@ public class ViewManager {
     }
 
     public static void showException(Exception e) {
-        showError(e.toString());
+        showError(e.toString(), null);
     }
 
-    public static void showError(String errorMessage) {
+    public static void showError(String errorMessage, Window parent) {
         var message = "An error occurred:\n" + errorMessage;
         var alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
+        alert.initStyle(StageStyle.UNDECORATED);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        if (parent != null) {
+            alert.initOwner(parent);
+        }
         alert.showAndWait();
     }
 

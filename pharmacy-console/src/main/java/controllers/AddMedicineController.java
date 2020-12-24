@@ -1,6 +1,7 @@
 package controllers;
 
 import com.jfoenix.controls.JFXTextField;
+import controllers.exceptions.IncorrectNameException;
 import javafx.fxml.FXML;
 import javafx.scene.control.SpinnerValueFactory;
 import models.Medicine;
@@ -47,10 +48,14 @@ public class AddMedicineController extends ModalControllerBase {
         logger.info("Initialized");
     }
 
-    public Medicine getResultMedicine() {
+    public Medicine getResultMedicine() throws IncorrectNameException {
         medicine.setName(nameField.getText());
         medicine.setPrice(priceSpinnerValueFactory.getValue());
         medicine.setCount(quantitySpinnerValueFactory.getValue());
+
+        if (medicine.getName().isEmpty()) {
+            throw new IncorrectNameException("medicine");
+        }
 
         medicine.getTargetDiseases().clear();
         for (var diseaseName : diseasesField.getText().trim().split(";++")) {

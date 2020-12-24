@@ -3,6 +3,7 @@ package controllers;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import controllers.events.MedicinesUpdatedEvent;
+import controllers.exceptions.IncorrectNameException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -68,13 +69,21 @@ public class DiseaseController extends WindowContainingControllerBase
     }
 
     public void addAction(ActionEvent event) {
-        var ctl = ViewManager.showAddDiseaseView(getWindowFromEvent(event),
+        var win = getWindowFromEvent(event);
+        var ctl = ViewManager.showAddDiseaseView(win,
                                         new AddDiseaseController());
         rootPane.requestFocus();
         if (!ctl.hasResult()) {
             return;
         }
-        var d = ctl.getResult();
+        Disease d;
+        try {
+            d = ctl.getResult();
+        } catch (IncorrectNameException e) {
+            ViewManager.showError(e.getPrintableMessage(), win);
+            logger.error(e);
+            return;
+        }
         diseaseService.add(d);
         allDiseases.add(d);
         diseaseWrappers.add(new DiseaseController.DiseaseWrapper(d));
@@ -123,14 +132,23 @@ public class DiseaseController extends WindowContainingControllerBase
             return;
         }
 
+        var win = getWindowFromEvent(event);
+
         var dWrapped = diseaseWrappers.get(selected);
         var ctl = new AddDiseaseController(dWrapped.getWrappedDisease());
-        ViewManager.showAddDiseaseView(getWindowFromEvent(event), ctl);
+        ViewManager.showAddDiseaseView(win, ctl);
         rootPane.requestFocus();
         if (!ctl.hasResult()) {
             return;
         }
-        var d = ctl.getResult();
+        Disease d;
+        try {
+            d = ctl.getResult();
+        } catch (IncorrectNameException e) {
+            ViewManager.showError(e.getPrintableMessage(), win);
+            logger.error(e);
+            return;
+        }
         diseaseService.update(d);
         dWrapped.setWrappedDisease(d);
 

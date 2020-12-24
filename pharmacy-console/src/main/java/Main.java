@@ -16,7 +16,7 @@ public class Main extends javafx.application.Application {
 
         if (!PersistenceEntityManagerUtils.tryInitializeEntityManager()) {
             logger.fatal("Init failed: Database is not connected");
-            ViewManager.showError("Database is not available");
+            ViewManager.showError("Database is not available", null);
             return;
         }
 
