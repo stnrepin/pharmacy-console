@@ -31,6 +31,13 @@ public class PersistenceEntityManagerUtils {
         }
     }
 
+    public static void setEntityManager(EntityManager entityManager) {
+        if (PersistenceEntityManagerUtils.entityManager != null) {
+            PersistenceEntityManagerUtils.entityManager.close();
+        }
+        PersistenceEntityManagerUtils.entityManager = entityManager;
+    }
+
     public interface EntityManagerCallback<R> {
         R call(EntityManager entityManager);
     }
