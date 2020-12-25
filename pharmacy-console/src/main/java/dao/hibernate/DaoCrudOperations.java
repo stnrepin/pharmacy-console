@@ -5,6 +5,9 @@ import utils.PersistenceEntityManagerUtils;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
+/**
+ * {@inheritDoc}
+ */
 public class DaoCrudOperations<K extends Serializable, E> implements dao.DaoCrudOperations<K, E> {
     private final Class<E> entityClass;
 

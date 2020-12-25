@@ -27,6 +27,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Контроллер, представляющий логику работы пользователя с заболеваниями
+ */
 public class DiseaseController extends WindowContainingControllerBase
                                implements EventListener<MedicinesUpdatedEvent> {
     private static final Logger logger = LogManager.getLogger(DiseaseController.class);
@@ -45,6 +48,9 @@ public class DiseaseController extends WindowContainingControllerBase
         diseaseWrappers = FXCollections.observableArrayList();
     }
 
+    /**
+     * Инициализует контроллер, автоматически вызывается JavaFX
+     */
     public void initialize() {
         diseaseIdColumn.setCellValueFactory(
                 x -> x.getValue().getValue().getIdProperty().asObject()
@@ -68,6 +74,10 @@ public class DiseaseController extends WindowContainingControllerBase
         logger.info("Initialized");
     }
 
+    /**
+     * Обрабатывает событие для действия "Добавить заболевание"
+     * @param event Информация о событии
+     */
     public void addAction(ActionEvent event) {
         var win = getWindowFromEvent(event);
         var ctl = ViewManager.showAddDiseaseView(win,
@@ -91,6 +101,10 @@ public class DiseaseController extends WindowContainingControllerBase
         logger.debug("Disease '" + d.getName() + "' added");
     }
 
+    /**
+     * Обрабатывает событие для действия "Удалить заболевание"
+     * @param event Информация о событии
+     */
     public void removeAction(ActionEvent event) {
         if (diseaseTable.getSelectionModel().isEmpty()) {
             return;
@@ -126,6 +140,10 @@ public class DiseaseController extends WindowContainingControllerBase
         }
     }
 
+    /**
+     * Обрабатывает событие для действия "Редактировать заболевание"
+     * @param event Информация о событии
+     */
     public void editAction(ActionEvent event) {
         var selected = getSelectedIndexOrNull();
         if (selected == null) {
@@ -155,6 +173,10 @@ public class DiseaseController extends WindowContainingControllerBase
         logger.debug("Disease '" + d.getName() + "' added");
     }
 
+    /**
+     * Инъектирует {@link services.DiseaseService} в контроллер
+     * @param diseaseService Объект сервиса
+     */
     public void setDiseaseService(DiseaseService diseaseService) {
         this.diseaseService = diseaseService;
         loadDiseases();
@@ -173,6 +195,14 @@ public class DiseaseController extends WindowContainingControllerBase
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * Обрабатывает событие изменения заболеваний
+     * <p>
+     * Появляется, если другой контроллер изменил
+     * заболевание
+     *
+     * @param event Событие
+     */
     public void handle(MedicinesUpdatedEvent event) {
         loadDiseases();
     }
@@ -188,6 +218,11 @@ public class DiseaseController extends WindowContainingControllerBase
         return selectedList.get(0);
     }
 
+    /**
+     * Обертка вокруг {@link models.Disease} для работы из JavaFX
+     * <p>
+     * Можно считать Model из MVC
+     */
     private static class DiseaseWrapper extends RecursiveTreeObject<DiseaseController.DiseaseWrapper> {
         private Disease wrapped;
         private final IntegerProperty id;

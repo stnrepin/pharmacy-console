@@ -1,14 +1,15 @@
 package dao.hibernate;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 import models.Medicine;
 import models.MedicineOrder;
 import utils.PersistenceEntityManagerUtils;
 
+/**
+ * {@inheritDoc}
+ */
 public class MedicineOrderDao extends DaoCrudOperations<Integer, MedicineOrder>
                               implements dao.MedicineOrderDao {
 

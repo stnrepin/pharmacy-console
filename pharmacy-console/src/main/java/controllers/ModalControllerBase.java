@@ -1,5 +1,10 @@
 package controllers;
 
+/**
+ * Базовый класс для контроллеров модальных представлений
+ * (основная особенность -- имеет кнопки OK и Cancel,
+ * которыми может быть закрыт)
+ */
 public class ModalControllerBase extends WindowContainingControllerBase {
     private boolean hasResult = false;
 

@@ -1,11 +1,13 @@
 package dao.hibernate;
 
 import models.Disease;
-import models.Medicine;
 import utils.PersistenceEntityManagerUtils;
 
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ */
 public class DiseaseDao extends DaoCrudOperations<Integer, Disease> implements dao.DiseaseDao {
     @Override
     public List<Disease> findAll() {

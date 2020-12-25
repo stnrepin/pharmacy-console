@@ -27,6 +27,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Контроллер, представляющий логику работы пользователя с лекарствами
+ */
 public class MedicineController extends WindowContainingControllerBase {
     private static final Logger logger = LogManager.getLogger(MedicineController.class);
 
@@ -54,6 +57,9 @@ public class MedicineController extends WindowContainingControllerBase {
         orderCreatedEventSource = new EventSource<>();
     }
 
+    /**
+     * Инициализует контроллер, автоматически вызывается JavaFX
+     */
     public void initialize() {
         medicineIdColumn.setCellValueFactory(
                 x -> x.getValue().getValue().getIdProperty().asObject()
@@ -83,6 +89,10 @@ public class MedicineController extends WindowContainingControllerBase {
         logger.info("Initialized");
     }
 
+    /**
+     * Обрабатывает событие для действия "Добавить лекарство"
+     * @param event Информация о событии
+     */
     public void addMedicineAction(ActionEvent event) {
         var win = getWindowFromEvent(event);
         var addMedController = new AddMedicineController();
@@ -109,6 +119,10 @@ public class MedicineController extends WindowContainingControllerBase {
         logger.debug("Medicine '" + m.getName() + "' added");
     }
 
+    /**
+     * Обрабатывает событие для действия "Удалить лекарство"
+     * @param event Информация о событии
+     */
     public void removeMedicineAction(ActionEvent event) {
         if (medicineTable.getSelectionModel().isEmpty()) {
             return;
@@ -138,6 +152,10 @@ public class MedicineController extends WindowContainingControllerBase {
         }
     }
 
+    /**
+     * Обрабатывает событие для действия "Редактировать лекарство"
+     * @param event Информация о событии
+     */
     public void editMedicineAction(ActionEvent event) {
         var selected = getSelectedIndexOrNull();
         if (selected == null) {
@@ -170,6 +188,10 @@ public class MedicineController extends WindowContainingControllerBase {
         logger.debug("Medicine '" + m.getName() + "' edited");
     }
 
+    /**
+     * Обрабатывает событие действия "Создание заказа"
+     * @param event Информация о событии
+     */
     public void createOrderAction(ActionEvent event) {
         var selected = getSelectedIndexOrNull();
         if (selected == null) {
@@ -192,6 +214,9 @@ public class MedicineController extends WindowContainingControllerBase {
         logger.debug("Order for '" + m.getName() + "' created");
     }
 
+    /**
+     * Обрабатывает событие для действия "Включение/выключение фильтрации"
+     */
     public void filterByDiseaseStateChanged() {
         if (filterByDiseaseToggle.isSelected()) {
             var name = filterField.getText();
@@ -202,24 +227,44 @@ public class MedicineController extends WindowContainingControllerBase {
         }
     }
 
+    /**
+     * Инъектирует {@link services.MedicineService} в контроллер
+     * @param medicineService Объект сервиса
+     */
     public void setMedicineService(MedicineService medicineService) {
         this.medicineService = medicineService;
         loadMedicines();
         logger.info("Medicines loaded");
     }
 
+    /**
+     * Инъектирует {@link services.DiseaseService} в контроллер
+     * @param diseaseService Объект сервиса
+     */
     public void setDiseaseService(DiseaseService diseaseService) {
         this.diseaseService = diseaseService;
     }
 
+    /**
+     * Инъектирует {@link services.MedicineOrderService} в контроллер
+     * @param medicineOrderService Объект сервиса
+     */
     public void setMedicineOrderService(MedicineOrderService medicineOrderService) {
         this.medicineOrderService = medicineOrderService;
     }
 
+    /**
+     * Возвращает {@link EventSource}, уведомляющий об изменениях лекарств
+     * @return Объект EventSource
+     */
     public EventSource<MedicinesUpdatedEvent> getMedicinesUpdatedEventSource() {
         return medicinesUpdatedEventSource;
     }
 
+    /**
+     * Возвращает {@link EventSource}, уведомляющий о создании нового заказа
+     * @return Объект EventSource
+     */
     public EventSource<MedicineOrderCreatedEvent> getOrderCreatedEventSource() {
         return orderCreatedEventSource;
     }
@@ -247,6 +292,11 @@ public class MedicineController extends WindowContainingControllerBase {
         return selectedList.get(0);
     }
 
+    /**
+     * Обертка вокруг {@link models.Medicine} для работы из JavaFX
+     * <p>
+     * Можно считать Model из MVC
+     */
     private static class MedicineWrapper extends RecursiveTreeObject<MedicineWrapper> {
         private Medicine wrapped;
         private final IntegerProperty id;

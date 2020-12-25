@@ -3,6 +3,9 @@ package models;
 import javax.persistence.*;
 import java.time.Instant;
 
+/**
+ * Модель таблицы базы данных "Заказ лекарства"
+ */
 @Table
 @Entity(name = "medicine_order")
 public class MedicineOrder {
@@ -18,6 +21,11 @@ public class MedicineOrder {
     @Column(name = "count")
     private int count;
 
+    /**
+     * Общая стоимость всего заказа
+     *
+     * totalPrice = count * item.price
+     */
     @Column(name = "total_price")
     private int totalPrice;
 

@@ -6,6 +6,9 @@ import models.Disease;
 import models.Medicine;
 import utils.PersistenceEntityManagerUtils;
 
+/**
+ * {@inheritDoc}
+ */
 public class MedicineDao extends DaoCrudOperations<Integer, Medicine> implements dao.MedicineDao  {
     @Override
     public List<Medicine> findAll() {

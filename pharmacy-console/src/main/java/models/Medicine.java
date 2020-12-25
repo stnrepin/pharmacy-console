@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Модель таблицы БД "Лекарство"
+ */
 @Entity
 @Table(name = "medicine")
 public class Medicine {

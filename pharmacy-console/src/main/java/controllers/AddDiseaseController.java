@@ -7,6 +7,9 @@ import models.Disease;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Контроллер для окна "Создание/Редактирование заболевания"
+ */
 public class AddDiseaseController extends ModalControllerBase {
     private static final Logger logger = LogManager.getLogger(AddDiseaseController.class);
 
@@ -23,12 +26,20 @@ public class AddDiseaseController extends ModalControllerBase {
         disease = initial;
     }
 
+    /**
+     * Инициализует контроллер, автоматически вызывается JavaFX
+     */
     public void initialize() {
         nameField.setText(disease.getName());
 
         logger.info("Initialized");
     }
 
+    /**
+     * Возвращает новое (или отредактированное) заболевание
+     * @return Заболевание
+     * @throws IncorrectNameException Если имя пустое или содержит ';'
+     */
     public Disease getResult() throws IncorrectNameException {
         var name = nameField.getText();
         if (name.isEmpty() || name.contains(";")) {

@@ -10,6 +10,11 @@ import services.DiseaseService;
 import services.MedicineOrderService;
 import services.MedicineService;
 
+/**
+ * Контроллер главного окна
+ * <p>
+ * Представляет собой точку входа в слой фронтенда.
+ */
 public class MainController {
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
@@ -28,6 +33,12 @@ public class MainController {
     private final MedicineOrderService medicineOrderService =
             new services.impl.MedicineOrderService(medicineOrderDao);
 
+    /**
+     * Инициализует контроллер, автоматически вызывается JavaFX
+     * <p>
+     * Создает DAO-классы, сервисы, контроллеры-потомки, связывает
+     * контроллеры между собой, инъектирует сервисы в контроллеры
+     */
     public void initialize() {
         medicineController.setMedicineService(medicineService);
         medicineController.setDiseaseService(diseaseService);

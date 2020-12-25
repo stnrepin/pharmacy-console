@@ -8,6 +8,9 @@ import models.Medicine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Контроллер для окна "Создание заказа"
+ */
 public class AddMedicineOrderController extends ModalControllerBase {
     private static final Logger logger = LogManager.getLogger(AddMedicineOrderController.class);
 
@@ -23,6 +26,9 @@ public class AddMedicineOrderController extends ModalControllerBase {
         this.medicine = medicineToOrder;
     }
 
+    /**
+     * Инициализует контроллер, автоматически вызывается JavaFX
+     */
     public void initialize() {
         quantitySpinnerValueFactory.setMax(medicine.getCount());
 
@@ -33,6 +39,10 @@ public class AddMedicineOrderController extends ModalControllerBase {
         logger.info("Initialized");
     }
 
+    /**
+     * Возвращает количество единиц лекарства, которые требуется заказать
+     * @return Количество единиц лекарства для заказа
+     */
     public int getQuantityToOrder() {
         return quantitySpinner.getValue();
     }

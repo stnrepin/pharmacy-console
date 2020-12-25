@@ -23,7 +23,6 @@ import utils.DateUtils;
 import utils.ViewManager;
 import utils.event.EventListener;
 
-import java.io.File;
 import java.net.URI;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -33,6 +32,9 @@ import java.time.format.FormatStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Контроллер, представляющий логику работы пользователя с заказами лекарств
+ */
 public class MedicineOrderController extends WindowContainingControllerBase
                                      implements EventListener<MedicineOrderCreatedEvent> {
     private static final Logger logger = LogManager.getLogger(MedicineOrderController.class);
@@ -69,6 +71,9 @@ public class MedicineOrderController extends WindowContainingControllerBase
         ordersTotalCost = new SimpleIntegerProperty(0);
     }
 
+    /**
+     * Инициализует контроллер, автоматически вызывается JavaFX
+     */
     public void initialize() {
         orderIdColumn.setCellValueFactory(
                 x -> x.getValue().getValue().getIdProperty().asObject()
@@ -104,6 +109,14 @@ public class MedicineOrderController extends WindowContainingControllerBase
         logger.info("Initialized");
     }
 
+    /**
+     * Обрабатывает событие для действия "Создать отчет"
+     * <p>
+     * Непосредственное создание отчета происходит в сервисе
+     * и выполняет здесь параллельно с отображением индикатора
+     * прогресса.
+     * @param event Информация о событии
+     */
     public void createReport(ActionEvent event) {
         var win = getWindowFromEvent(event);
         var out_file = ViewManager.showSaveDialog(win,"PDF files (*.pdf)", "*.pdf");
@@ -146,6 +159,9 @@ public class MedicineOrderController extends WindowContainingControllerBase
         thread.start();
     }
 
+    /**
+     * Обрабатывает событие для действия "Включение/выключение фильтрации"
+     */
     public void filterByDateStateChanged() {
         if (filterByDateToggle.isSelected()) {
             var from = DateUtils.toInstant(dateFromPicker.getValue());
@@ -160,24 +176,50 @@ public class MedicineOrderController extends WindowContainingControllerBase
         }
     }
 
+    /**
+     * Инъектирует {@link services.MedicineOrderService} в контроллер
+     * @param medicineOrderService Объект сервиса
+     */
     public void setMedicineOrderService(MedicineOrderService medicineOrderService) {
         this.medicineOrderService = medicineOrderService;
         loadMedicineOrders();
         logger.info("Medicine orders loaded");
     }
 
+    /**
+     * Возвращает общую сумма стоимости всех заказов, отображаемых
+     * в данный момент (то есть с учетом фильтрации)
+     * @return Общая сумма
+     */
     public int getOrdersTotalCost() {
         return ordersTotalCost.getValue();
     }
 
+    /**
+     * Указывает общую сумма стоимости всех заказов
+     * @param v Общая сумма
+     */
     public void setOrdersTotalCost(int v) {
         ordersTotalCost.setValue(v);
     }
 
+    /**
+     * Свойство, показывающее общую сумма стоимости всех заказов,
+     * отображаемых в данный момент (то есть с учетом фильтрации)
+     * @return Свойство
+     */
     public IntegerProperty ordersTotalCostProperty() {
         return ordersTotalCost;
     }
 
+    /**
+     * Обрабатывает событие изменения заказов
+     * <p>
+     * Появляется, если другой контроллер изменил
+     * список заказов
+     *
+     * @param event Событие
+     */
     public void handle(MedicineOrderCreatedEvent event) {
         filterByDateToggle.setSelected(false);
         loadMedicineOrders();
@@ -197,6 +239,11 @@ public class MedicineOrderController extends WindowContainingControllerBase
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * Обертка вокруг {@link models.MedicineOrder} для работы из JavaFX
+     * <p>
+     * Можно считать Model из MVC
+     */
     private static class MedicineOrderWrapper extends
             RecursiveTreeObject<MedicineOrderController.MedicineOrderWrapper> {
         private MedicineOrder wrapped;

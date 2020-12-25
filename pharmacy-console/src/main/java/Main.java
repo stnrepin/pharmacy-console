@@ -5,9 +5,16 @@ import utils.ViewManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Точка входа в приложение
+ */
 public class Main extends javafx.application.Application {
     private static final Logger logger = LogManager.getLogger(Main.class);
 
+    /**
+     * Инициализирует приложение и запускает главное окно
+     * @param stage Корневой контейнер для содержимого окна
+     */
     @Override
     public void start(Stage stage) {
         stage.setTitle("Pharmacy Console");
@@ -28,6 +35,10 @@ public class Main extends javafx.application.Application {
         }
     }
 
+    /**
+     * Точка входа в приложение
+     * @param args Аргументы командной строки
+     */
     public static void main(String[] args) {
         Application.launch(args);
     }

@@ -9,8 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import services.DiseaseService;
 
-import java.util.ArrayList;
-
+/**
+ * Контроллер для окна "Создание/редактирование лекарства"
+ */
 public class AddMedicineController extends ModalControllerBase {
     private static final Logger logger = LogManager.getLogger(AddMedicineController.class);
 
@@ -30,6 +31,9 @@ public class AddMedicineController extends ModalControllerBase {
         medicine = initial;
     }
 
+    /**
+     * Инициализует контроллер, автоматически вызывается JavaFX
+     */
     public void initialize() {
         nameField.setText(medicine.getName());
         priceSpinnerValueFactory.setValue(medicine.getPrice());
@@ -48,6 +52,11 @@ public class AddMedicineController extends ModalControllerBase {
         logger.info("Initialized");
     }
 
+    /**
+     * Возвращает новое (или отредактированное) лекарство
+     * @return Лекарство
+     * @throws IncorrectNameException Если имя пустое
+     */
     public Medicine getResultMedicine() throws IncorrectNameException {
         medicine.setName(nameField.getText());
         medicine.setPrice(priceSpinnerValueFactory.getValue());
