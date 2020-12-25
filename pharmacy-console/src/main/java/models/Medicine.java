@@ -1,14 +1,56 @@
 package models;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Модель таблицы БД "Лекарство"
+ */
+@Entity
+@Table(name = "medicine")
 public class Medicine {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "price")
     private int price;
+
+    @Column(name = "count")
     private int count;
-    private Set<Disease> targetDiseases = new HashSet<>();
+
+    @ManyToMany(cascade =
+            {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
+            })
+    @JoinTable(name = "medicine_disease",
+            joinColumns = @JoinColumn(name = "med_id"),
+            inverseJoinColumns = @JoinColumn(name = "dis_id")
+    )
+    private List<Disease> targetDiseases;
+
+    public Medicine() {
+        this("", 0, 0);
+    }
+
+    public Medicine(String name, int price, int count) {
+        this(name, price, count, new ArrayList<>());
+    }
+
+    public Medicine(String name, int price, int count, List<Disease> targetDiseases) {
+        this.name = name;
+        this.price = price;
+        this.count = count;
+        this.targetDiseases = targetDiseases;
+    }
 
     public int getId() {
         return id;
@@ -46,11 +88,11 @@ public class Medicine {
         this.targetDiseases.add(target);
     }
 
-    public Set<Disease> getTargetDiseases() {
+    public List<Disease> getTargetDiseases() {
         return targetDiseases;
     }
 
-    public void setTargetDiseases(Set<Disease> targetDiseases) {
+    public void setTargetDiseases(List<Disease> targetDiseases) {
         this.targetDiseases = targetDiseases;
     }
 }

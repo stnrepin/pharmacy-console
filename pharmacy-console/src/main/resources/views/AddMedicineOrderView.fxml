@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import com.jfoenix.controls.JFXButton?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="280" prefWidth="480"
+            styleClass="phcy-panel">
+
+    <VBox spacing="10"
+          AnchorPane.leftAnchor="10" AnchorPane.topAnchor="20"
+          AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="20">
+        <GridPane hgap="10" vgap="15" VBox.vgrow="ALWAYS">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50" />
+                <ColumnConstraints percentWidth="50" />
+            </columnConstraints>
+
+            <Label text="Medicine Name" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                   styleClass="phcy-text" />
+            <Label fx:id="nameLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                   styleClass="phcy-text" />
+
+            <Label text="Unit price" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                   styleClass="phcy-text" />
+            <Label fx:id="priceLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                   styleClass="phcy-text" />
+
+            <Label text="Available quantity" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                   styleClass="phcy-text" />
+            <Label fx:id="quantityLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                   styleClass="phcy-text" />
+
+            <Label text="Quantity to order" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                   styleClass="phcy-text" />
+            <Spinner fx:id="quantitySpinner" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                     styleClass="phcy,phcy-text,phcy-text-field" editable="true">
+                <valueFactory>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory
+                            fx:id="quantitySpinnerValueFactory" min="0" max="100000" />
+                </valueFactory>
+            </Spinner>
+        </GridPane>
+        <HBox spacing="20" alignment="BOTTOM_RIGHT" AnchorPane.rightAnchor="0">
+            <JFXButton text="OK" onAction="#ok" styleClass="phcy-main-button" />
+            <JFXButton text="Cancel" onAction="#cancel" styleClass="phcy-main-button"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

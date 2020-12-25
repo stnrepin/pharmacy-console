@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import com.jfoenix.controls.JFXSpinner?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="50" prefWidth="50"
+            style="-fx-background-color: transparent;">
+    <JFXSpinner style="-fx-background-color: transparent;"/>
+</StackPane>

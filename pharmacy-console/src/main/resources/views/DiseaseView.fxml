@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="rootPane"
+            fx:controller="controllers.DiseaseController">
+
+    <VBox spacing="20"
+          AnchorPane.leftAnchor="10" AnchorPane.topAnchor="20"
+          AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="20">
+        <HBox alignment="CENTER_LEFT">
+            <JFXButton styleClass="phcy-action-button" onAction="#addAction">
+                <graphic>
+                    <MaterialIconView glyphName="ADD" glyphSize="60" />
+                </graphic>
+            </JFXButton>
+            <JFXButton styleClass="phcy-action-button" onAction="#removeAction">
+                <graphic>
+                    <MaterialIconView glyphName="REMOVE" glyphSize="60" />
+                </graphic>
+            </JFXButton>
+            <JFXButton styleClass="phcy-action-button" onAction="#editAction">
+                <graphic>
+                    <MaterialIconView glyphName="EDIT" glyphSize="60" />
+                </graphic>
+            </JFXButton>
+        </HBox>
+        <JFXTreeTableView fx:id="diseaseTable" VBox.vgrow="ALWAYS" maxHeight="Infinity"
+                          styleClass="phcy">
+            <columns>
+                <JFXTreeTableColumn fx:id="diseaseIdColumn" text="ID" resizable="false"
+                                    prefWidth="${diseaseTable.width*0.30}" sortable="false" />
+                <JFXTreeTableColumn fx:id="diseaseNameColumn" text="Name" resizable="false"
+                                    prefWidth="${diseaseTable.width*0.70}" sortable="false" />
+            </columns>
+        </JFXTreeTableView>
+    </VBox>
+</AnchorPane>

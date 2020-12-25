@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import javafx.geometry.Insets?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="rootPane"
+            fx:controller="controllers.MedicineOrderController">
+
+    <VBox spacing="20"
+          AnchorPane.leftAnchor="10" AnchorPane.topAnchor="20"
+          AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="20">
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <JFXButton styleClass="phcy-action-button" onAction="#createReport">
+                <graphic>
+                    <MaterialIconView glyphName="PRINT" glyphSize="60" />
+                </graphic>
+            </JFXButton>
+            <VBox spacing="10" styleClass="phcy-panel" minWidth="300">
+                <padding>
+                    <Insets left="10" top="10" right="10" bottom="10" />
+                </padding>
+                <Text text="Info" styleClass="phcy-text,phcy-text-h" />
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Text text="Total cost:" styleClass="phcy-text" />
+                    <Text text="${controller.ordersTotalCost}" styleClass="phcy-text" />
+                </HBox>
+            </VBox>
+            <VBox spacing="10" styleClass="phcy-panel"
+                  HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <padding>
+                    <Insets left="10" top="10" right="10" bottom="10" />
+                </padding>
+                <Text text="Filter" styleClass="phcy-text,phcy-text-h" />
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <JFXToggleButton fx:id="filterByDateToggle"
+                                     styleClass="phcy-toggle-button"
+                                     onAction="#filterByDateStateChanged" />
+                    <Text text="by date:" styleClass="phcy-text" />
+                    <JFXDatePicker fx:id="dateFromPicker"
+                                   styleClass="phcy,phcy-text,phcy-text-field" />
+                    <Text text="—" styleClass="phcy-text" />
+                    <JFXDatePicker fx:id="dateToPicker"
+                                   styleClass="phcy,phcy-text,phcy-text-field" />
+                </HBox>
+            </VBox>
+        </HBox>
+        <JFXTreeTableView fx:id="orderTable" VBox.vgrow="ALWAYS" maxHeight="Infinity"
+                          styleClass="phcy">
+            <columns>
+                <JFXTreeTableColumn fx:id="orderIdColumn" text="ID" resizable="false"
+                                    prefWidth="${orderTable.width*0.10}" sortable="false" />
+                <JFXTreeTableColumn fx:id="medicineNameColumn" text="Medicine Name" resizable="false"
+                                    prefWidth="${orderTable.width*0.40}" sortable="false" />
+                <JFXTreeTableColumn fx:id="countColumn" text="Medicine Quantity" resizable="false"
+                                    prefWidth="${orderTable.width*0.10}" sortable="false" />
+                <JFXTreeTableColumn fx:id="priceColumn" text="Total Price" resizable="false"
+                                    prefWidth="${orderTable.width*0.10}" sortable="false" />
+                <JFXTreeTableColumn fx:id="orderDateColumn" text="Order Date" resizable="false"
+                                    prefWidth="${orderTable.width*0.30}" sortable="false" />
+            </columns>
+        </JFXTreeTableView>
+    </VBox>
+</AnchorPane>

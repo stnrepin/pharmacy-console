@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="rootPane"
+            fx:controller="controllers.MedicineController">
+
+    <VBox spacing="20"
+          AnchorPane.leftAnchor="10" AnchorPane.topAnchor="20"
+          AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="20">
+        <HBox alignment="CENTER_LEFT">
+            <JFXButton styleClass="phcy-action-button" onAction="#addMedicineAction">
+                <graphic>
+                    <MaterialIconView glyphName="ADD" glyphSize="60" />
+                </graphic>
+            </JFXButton>
+            <JFXButton styleClass="phcy-action-button" onAction="#removeMedicineAction">
+                <graphic>
+                    <MaterialIconView glyphName="REMOVE" glyphSize="60" />
+                </graphic>
+            </JFXButton>
+            <JFXButton styleClass="phcy-action-button" onAction="#editMedicineAction">
+                <graphic>
+                    <MaterialIconView glyphName="EDIT" glyphSize="60" />
+                </graphic>
+            </JFXButton>
+            <JFXButton styleClass="phcy-action-button" onAction="#createOrderAction">
+                <graphic>
+                    <MaterialIconView glyphName="ADD_SHOPPING_CART" glyphSize="60" />
+                </graphic>
+            </JFXButton>
+            <VBox spacing="10" styleClass="phcy-panel"
+                  HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <padding>
+                    <Insets left="10" top="10" right="10" bottom="10" />
+                </padding>
+                <Text text="Filter" styleClass="phcy-text,phcy-text-h" />
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <JFXToggleButton fx:id="filterByDiseaseToggle"
+                                     styleClass="phcy-toggle-button"
+                                     onAction="#filterByDiseaseStateChanged" />
+                    <Text text="by diseases:" styleClass="phcy-text" />
+                    <JFXTextField fx:id="filterField" styleClass="phcy-text,phcy-text-field" />
+                </HBox>
+            </VBox>
+        </HBox>
+        <JFXTreeTableView fx:id="medicineTable" VBox.vgrow="ALWAYS" maxHeight="Infinity"
+                          styleClass="phcy">
+            <columns>
+                <JFXTreeTableColumn fx:id="medicineIdColumn" text="ID" resizable="false"
+                                    prefWidth="${medicineTable.width*0.17}" sortable="false" />
+                <JFXTreeTableColumn fx:id="medicineNameColumn" text="Name" resizable="false"
+                                    prefWidth="${medicineTable.width*0.49}" sortable="false" />
+                <JFXTreeTableColumn fx:id="medicineQuantityColumn" text="Quantity" resizable="false"
+                                    prefWidth="${medicineTable.width*0.17}" sortable="false" />
+                <JFXTreeTableColumn fx:id="medicinePriceColumn" text="Unit Price" resizable="false"
+                                    prefWidth="${medicineTable.width*0.17}" sortable="false" />
+            </columns>
+        </JFXTreeTableView>
+    </VBox>
+
+</AnchorPane>
